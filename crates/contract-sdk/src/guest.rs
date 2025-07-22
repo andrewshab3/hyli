@@ -16,7 +16,7 @@ This is a code snippet of a Risc0 guest entrypoint (e.g. file `methods/guest/src
 ```rust,no_run,compile_fail
 #![no_main]
 
-use hyle_hydentity::Hydentity;
+use hyli_hydentity::Hydentity;
 use sdk::guest::{execute, GuestEnv, Risc0Env};
 
 risc0_zkvm::guest::entry!(main);
@@ -58,9 +58,9 @@ fn main() {
 
 use alloc::vec::Vec;
 use borsh::BorshDeserialize;
-use hyle_model::Calldata;
+use hyli_model::Calldata;
 
-use crate::{utils::as_hyle_output, HyleOutput};
+use crate::{utils::as_hyli_output, HyleOutput};
 use crate::{RunResult, TransactionalZkContract, ZkContract};
 
 pub trait GuestEnv {
@@ -146,7 +146,7 @@ where
     let mut outputs = Vec::with_capacity(calldata.len());
     if let Err(e) = contract.initialize() {
         for calldata in calldata.iter() {
-            outputs.push(as_hyle_output(
+            outputs.push(as_hyli_output(
                 initial_state_commitment.clone(),
                 initial_state_commitment.clone(),
                 calldata,
@@ -166,7 +166,7 @@ where
             contract.on_success()
         };
 
-        outputs.push(as_hyle_output(
+        outputs.push(as_hyli_output(
             initial_state_commitment,
             next_state_commitment.clone(),
             calldata,

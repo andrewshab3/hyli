@@ -5,7 +5,7 @@ use client_sdk::{
 };
 use sdk::{
     api::{APIFees, APIFeesBalance, APIStaking},
-    utils::as_hyle_output,
+    utils::as_hyli_output,
     Blob, Calldata, ContractName, RegisterContractEffect, StakingAction, StateCommitment,
     ValidatorPublicKey, ZkContract,
 };
@@ -29,7 +29,7 @@ impl TxExecutorHandler for Staking {
         let initial_state_commitment = <Self as ZkContract>::commit(self);
         let mut res = <Self as ZkContract>::execute(self, calldata);
         let next_state_commitment = <Self as ZkContract>::commit(self);
-        Ok(as_hyle_output(
+        Ok(as_hyli_output(
             initial_state_commitment,
             next_state_commitment,
             calldata,

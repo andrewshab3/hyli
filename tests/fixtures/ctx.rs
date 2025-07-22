@@ -10,22 +10,22 @@ use anyhow::{Context, Result};
 use api::APIContract;
 use assertables::assert_ok;
 use client_sdk::{rest_client::NodeApiClient, transaction_builder::ProvableBlobTx};
-use hyle_model::api::APINodeContract;
+use hyli_model::api::APINodeContract;
 use testcontainers_modules::{
     postgres::Postgres,
     testcontainers::{runners::AsyncRunner, ContainerAsync, ImageExt},
 };
 use tracing::info;
 
-use hyle::{
+use hyli::{
     model::*,
     rest::client::{IndexerApiHttpClient, NodeApiHttpClient},
     utils::conf::{Conf, P2pMode, TimestampCheck},
 };
-use hyle_contract_sdk::{
+use hyli_contract_sdk::{
     BlobIndex, ContractName, HyleOutput, Identity, ProgramId, StateCommitment, TxHash, Verifier,
 };
-use hyle_net::net::bind_tcp_listener;
+use hyli_net::net::bind_tcp_listener;
 
 use crate::fixtures::test_helpers::{wait_height_timeout, IndexerOrNodeHttpClient};
 

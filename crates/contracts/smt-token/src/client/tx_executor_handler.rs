@@ -4,7 +4,7 @@ use anyhow::{anyhow, bail, Context, Result};
 use client_sdk::transaction_builder::{ProvableBlobTx, TxExecutorHandler};
 use sdk::{
     merkle_utils::BorshableMerkleProof,
-    utils::{as_hyle_output, parse_calldata},
+    utils::{as_hyli_output, parse_calldata},
     Calldata, ContractName, HyleOutput, Identity, RegisterContractEffect, StateCommitment,
     StructuredBlob,
 };
@@ -63,7 +63,7 @@ impl TxExecutorHandler for SmtTokenProvableState {
             Err(e) => Err(e),
             Ok(output) => Ok((output.into_bytes(), execution_ctx, vec![])),
         };
-        Ok(as_hyle_output(
+        Ok(as_hyli_output(
             initial_state_commitment,
             next_state_commitment,
             calldata,

@@ -2,7 +2,7 @@
 use fixtures::ctx::E2ECtx;
 use tracing::info;
 
-use hyle::model::ProofData;
+use hyli::model::ProofData;
 
 mod fixtures;
 
@@ -24,8 +24,8 @@ mod e2e_amm {
         client::tx_executor_handler::{register_identity, verify_identity},
         Hydentity,
     };
-    use hyle_contract_sdk::{Blob, Calldata, ContractName, HyleOutput};
-    use hyle_contracts::{AMM_ELF, HYDENTITY_ELF, HYLLAR_ELF};
+    use hyli_contract_sdk::{Blob, Calldata, ContractName, HyleOutput};
+    use hyli_contracts::{AMM_ELF, HYDENTITY_ELF, HYLLAR_ELF};
     use hyllar::{
         client::tx_executor_handler::{approve, transfer},
         erc20::ERC20,
@@ -412,10 +412,10 @@ mod e2e_amm {
 
         let recursive_proof = generate_recursive_proof(
             &[
-                hyle_contracts::HYDENTITY_ID,
-                hyle_contracts::AMM_ID,
-                hyle_contracts::HYLLAR_ID,
-                hyle_contracts::HYLLAR_ID,
+                hyli_contracts::HYDENTITY_ID,
+                hyli_contracts::AMM_ID,
+                hyli_contracts::HYLLAR_ID,
+                hyli_contracts::HYLLAR_ID,
             ],
             &[
                 &hydentity_proof,

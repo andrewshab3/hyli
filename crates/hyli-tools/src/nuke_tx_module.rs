@@ -1,10 +1,10 @@
 use anyhow::{Context, Result};
 use client_sdk::rest_client::{NodeApiClient, NodeApiHttpClient};
-use hyle_model::{
+use hyli_model::{
     BlobTransaction, ContractAction, HyleOutput, Identity, NodeStateEvent, TxHash,
     verifiers::Secp256k1Blob,
 };
-use hyle_modules::{
+use hyli_modules::{
     bus::SharedMessageBus, module_bus_client, modules::Module, node_state::NukeTxAction,
 };
 use secp256k1::{Message, PublicKey, Secp256k1, SecretKey};

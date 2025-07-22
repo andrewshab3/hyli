@@ -8,7 +8,7 @@ mod module;
 use blocks_fjall::Blocks;
 //use blocks_memory::Blocks;
 
-use hyle_modules::{
+use hyli_modules::{
     log_error, module_bus_client, module_handle_messages,
     modules::Module,
     utils::da_codec::{
@@ -16,7 +16,7 @@ use hyle_modules::{
         DataAvailabilityServer,
     },
 };
-use hyle_net::tcp::TcpEvent;
+use hyli_net::tcp::TcpEvent;
 use rand::seq::SliceRandom;
 use tokio::{
     task::JoinSet,
@@ -52,7 +52,7 @@ struct DABusClient {
 }
 
 type DaTcpServer =
-    hyle_net::tcp::tcp_server::TcpServer<DataAvailabilityRequest, DataAvailabilityEvent>;
+    hyli_net::tcp::tcp_server::TcpServer<DataAvailabilityRequest, DataAvailabilityEvent>;
 
 #[derive(Debug)]
 pub struct DataAvailability {
@@ -536,8 +536,8 @@ pub mod tests {
         node_state::module::{NodeStateBusClient, NodeStateEvent},
         utils::{conf::Conf, integration_test::find_available_port},
     };
-    use hyle_modules::log_error;
-    use hyle_modules::utils::da_codec::{DataAvailabilityClient, DataAvailabilityServer};
+    use hyli_modules::log_error;
+    use hyli_modules::utils::da_codec::{DataAvailabilityClient, DataAvailabilityServer};
 
     use super::codec::DataAvailabilityEvent;
     use super::Blocks;

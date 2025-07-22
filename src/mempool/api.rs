@@ -1,9 +1,9 @@
 use anyhow::anyhow;
 use axum::{extract::State, http::StatusCode, response::IntoResponse, Json, Router};
 use borsh::{BorshDeserialize, BorshSerialize};
-use hyle_contract_sdk::TxHash;
-use hyle_model::{api::APIRegisterContract, RegisterContractAction, StructuredBlobData};
-use hyle_modules::{
+use hyli_contract_sdk::TxHash;
+use hyli_model::{api::APIRegisterContract, RegisterContractAction, StructuredBlobData};
+use hyli_modules::{
     bus::SharedMessageBus, modules::SharedBuildApiCtx,
     node_state::contract_registration::validate_contract_registration_metadata,
 };
@@ -162,7 +162,7 @@ pub async fn register_contract(
 
 impl Clone for RouterState {
     fn clone(&self) -> Self {
-        use hyle_modules::utils::static_type_map::Pick;
+        use hyli_modules::utils::static_type_map::Pick;
         Self {
             bus: RestBusClient::new(
                 Pick::<BusMetrics>::get(&self.bus).clone(),

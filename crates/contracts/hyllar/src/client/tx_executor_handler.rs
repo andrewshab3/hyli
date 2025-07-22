@@ -4,7 +4,7 @@ use client_sdk::{
     transaction_builder::{ProvableBlobTx, StateUpdater, TxExecutorBuilder, TxExecutorHandler},
 };
 use sdk::{
-    utils::as_hyle_output, Blob, Calldata, ContractName, RegisterContractEffect, StateCommitment,
+    utils::as_hyli_output, Blob, Calldata, ContractName, RegisterContractEffect, StateCommitment,
     ZkContract,
 };
 
@@ -25,7 +25,7 @@ impl TxExecutorHandler for Hyllar {
         let initial_state_commitment = <Self as ZkContract>::commit(self);
         let mut res = <Self as ZkContract>::execute(self, calldata);
         let next_state_commitment = <Self as ZkContract>::commit(self);
-        Ok(as_hyle_output(
+        Ok(as_hyli_output(
             initial_state_commitment,
             next_state_commitment,
             calldata,

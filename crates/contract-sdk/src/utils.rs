@@ -7,7 +7,7 @@ use alloc::{format, vec};
 use borsh::{BorshDeserialize, BorshSerialize};
 use core::result::Result;
 
-use hyle_model::{
+use hyli_model::{
     Blob, BlobIndex, Calldata, DropEndOfReader, HyleOutput, IndexedBlobs, StateCommitment,
     StructuredBlob,
 };
@@ -141,7 +141,7 @@ fn fail(
     }
 }
 
-pub fn as_hyle_output(
+pub fn as_hyli_output(
     initial_state_commitment: StateCommitment,
     next_state_commitment: StateCommitment,
     calldata: &Calldata,
@@ -254,7 +254,7 @@ where
 #[cfg(test)]
 mod tests {
     use super::*;
-    use hyle_model::{Blob, BlobData, ContractName, TxHash};
+    use hyli_model::{Blob, BlobData, ContractName, TxHash};
 
     fn make_calldata(
         identity: Identity,

@@ -77,7 +77,7 @@ impl ProofTxBuilder {
     /// for (proof, contract_name) in transaction.iter_prove() {
     ///    let proof: ProofData = proof.await.unwrap();
     ///    ctx.client()
-    ///        .send_tx_proof(&hyle::model::ProofTransaction {
+    ///        .send_tx_proof(&hyli::model::ProofTransaction {
     ///            blob_tx_hash: blob_tx_hash.clone(),
     ///            proof,
     ///            contract_name,
@@ -389,7 +389,7 @@ pub trait TxExecutorHandler {
 /// Must have Calldata, ContractName, HyleOutput, TxExecutorHandler and anyhow in scope.
 /// Example:
 /// use anyhow;
-/// use hyle_contract_sdk::{Blob, Calldata, ContractName, HyleOutput};
+/// use hyli_contract_sdk::{Blob, Calldata, ContractName, HyleOutput};
 /// use client_sdk::transaction_builder::TxExecutorHandler;
 #[macro_export]
 macro_rules! contract_states {

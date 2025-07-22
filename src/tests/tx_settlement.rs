@@ -1,10 +1,10 @@
 use client_sdk::rest_client::{IndexerApiHttpClient, NodeApiClient, NodeApiHttpClient};
-use hyle_model::{
+use hyli_model::{
     api::APIRegisterContract, BlobTransaction, ContractAction, ContractName, Hashed, OnchainEffect,
     ProgramId, ProofData, ProofTransaction, RegisterContractAction, RegisterContractEffect,
     StateCommitment,
 };
-use hyle_modules::node_state::test::make_hyle_output_with_state;
+use hyli_modules::node_state::test::make_hyli_output_with_state;
 use testcontainers_modules::{
     postgres::Postgres,
     testcontainers::{runners::AsyncRunner, ImageExt},
@@ -18,7 +18,7 @@ use crate::{
 
 use anyhow::Result;
 
-use hyle_contract_sdk::BlobIndex;
+use hyli_contract_sdk::BlobIndex;
 
 fn make_register_blob_action(
     contract_name: ContractName,
@@ -56,11 +56,11 @@ async fn test_full_settlement_flow() -> Result<()> {
         pg.get_host_port_ipv4(5432).await.unwrap()
     );
 
-    let mut hyle_node = builder.build().await?;
+    let mut hyli_node = builder.build().await?;
 
-    hyle_node.wait_for_genesis_event().await?;
+    hyli_node.wait_for_genesis_event().await?;
     let client = NodeApiHttpClient::new(format!("http://localhost:{rest_server_port}/")).unwrap();
-    hyle_node.wait_for_rest_api(&client).await?;
+    hyli_node.wait_for_rest_api(&client).await?;
 
     info!("➡️  Registering contracts c1 & c2.hyle");
 
@@ -97,7 +97,7 @@ async fn test_full_settlement_flow() -> Result<()> {
     let proof_c1 = ProofTransaction {
         contract_name: "c1".into(),
         proof: ProofData(
-            borsh::to_vec(&vec![make_hyle_output_with_state(
+            borsh::to_vec(&vec![make_hyli_output_with_state(
                 tx.clone(),
                 BlobIndex(0),
                 &[1, 2, 3],
@@ -109,7 +109,7 @@ async fn test_full_settlement_flow() -> Result<()> {
     let proof_c2 = ProofTransaction {
         contract_name: "c2.hyle".into(),
         proof: ProofData(
-            borsh::to_vec(&vec![make_hyle_output_with_state(
+            borsh::to_vec(&vec![make_hyli_output_with_state(
                 tx.clone(),
                 BlobIndex(1),
                 &[7, 7, 7],
@@ -122,9 +122,9 @@ async fn test_full_settlement_flow() -> Result<()> {
     client.send_tx_proof(proof_c2).await.unwrap();
 
     info!("➡️  Waiting for TX to be settled");
-    hyle_node.wait_for_settled_tx(tx.hashed()).await?;
+    hyli_node.wait_for_settled_tx(tx.hashed()).await?;
     // Wait a block on top to make sure the state is updated.
-    hyle_node.wait_for_n_blocks(1).await?;
+    hyli_node.wait_for_n_blocks(1).await?;
 
     info!("➡️  Getting contracts");
 
@@ -161,7 +161,7 @@ async fn test_full_settlement_flow() -> Result<()> {
     Ok(())
 }
 
-async fn build_hyle_node() -> Result<(String, NodeIntegrationCtx)> {
+async fn build_hyli_node() -> Result<(String, NodeIntegrationCtx)> {
     // Start postgres DB with default settings for the indexer.
     let pg = Postgres::default()
         .with_tag("17-alpine")
@@ -186,23 +186,23 @@ async fn build_hyle_node() -> Result<(String, NodeIntegrationCtx)> {
 
 #[test_log::test(tokio::test(flavor = "multi_thread", worker_threads = 2))]
 async fn test_tx_settlement_duplicates() -> Result<()> {
-    let (rest_client, mut hyle_node) = build_hyle_node().await?;
+    let (rest_client, mut hyli_node) = build_hyli_node().await?;
     let client = NodeApiHttpClient::new(rest_client).unwrap();
 
-    hyle_node.wait_for_genesis_event().await?;
-    hyle_node.wait_for_rest_api(&client).await?;
+    hyli_node.wait_for_genesis_event().await?;
+    hyli_node.wait_for_rest_api(&client).await?;
 
     let b1 = make_register_blob_action("c1".into(), StateCommitment(vec![1, 2, 3]));
 
     info!("➡️  Registering contract c1 - first time");
 
     client.send_tx_blob(b1.clone()).await.unwrap();
-    hyle_node.wait_for_n_blocks(1).await?;
+    hyli_node.wait_for_n_blocks(1).await?;
 
     info!("➡️  Registering contract c1 - second time");
 
     client.send_tx_blob(b1).await.unwrap();
-    hyle_node.wait_for_n_blocks(1).await?;
+    hyli_node.wait_for_n_blocks(1).await?;
 
     client
         .register_contract(APIRegisterContract {
@@ -214,7 +214,7 @@ async fn test_tx_settlement_duplicates() -> Result<()> {
         })
         .await
         .unwrap();
-    hyle_node.wait_for_n_blocks(1).await?;
+    hyli_node.wait_for_n_blocks(1).await?;
 
     let tx = BlobTransaction::new(
         "test@c2.hyle",
@@ -236,18 +236,18 @@ async fn test_tx_settlement_duplicates() -> Result<()> {
     client.send_tx_blob(tx.clone()).await.unwrap();
     // Second time in the same block, should be dicarded
     client.send_tx_blob(tx.clone()).await.unwrap();
-    hyle_node.wait_for_n_blocks(1).await?;
+    hyli_node.wait_for_n_blocks(1).await?;
 
     info!("➡️  Sending blobs for c1 & c2.hyle - second time");
 
     // Next block, the same tx should be discarded because its hash is already in the map
     client.send_tx_blob(tx.clone()).await.unwrap();
-    hyle_node.wait_for_n_blocks(1).await?;
+    hyli_node.wait_for_n_blocks(1).await?;
 
     let proof_c1 = ProofTransaction {
         contract_name: "c1".into(),
         proof: ProofData(
-            borsh::to_vec(&vec![make_hyle_output_with_state(
+            borsh::to_vec(&vec![make_hyli_output_with_state(
                 tx.clone(),
                 BlobIndex(0),
                 &[1, 2, 3],
@@ -259,7 +259,7 @@ async fn test_tx_settlement_duplicates() -> Result<()> {
     let proof_c2 = ProofTransaction {
         contract_name: "c2.hyle".into(),
         proof: ProofData(
-            borsh::to_vec(&vec![make_hyle_output_with_state(
+            borsh::to_vec(&vec![make_hyli_output_with_state(
                 tx.clone(),
                 BlobIndex(1),
                 &[7, 7, 7],
@@ -281,7 +281,7 @@ async fn test_tx_settlement_duplicates() -> Result<()> {
     client.send_tx_proof(proof_c2).await.unwrap();
 
     info!("➡️  Waiting for TX to be settled");
-    hyle_node.wait_for_settled_tx(tx.hashed()).await?;
+    hyli_node.wait_for_settled_tx(tx.hashed()).await?;
 
     let contract = client.get_contract("c1".into()).await?;
     assert_eq!(contract.state_commitment.0, vec![4, 5, 6]);
@@ -293,7 +293,7 @@ async fn test_tx_settlement_duplicates() -> Result<()> {
     let proof_c1 = ProofTransaction {
         contract_name: "c1".into(),
         proof: ProofData(
-            borsh::to_vec(&vec![make_hyle_output_with_state(
+            borsh::to_vec(&vec![make_hyli_output_with_state(
                 tx.clone(),
                 BlobIndex(0),
                 &[4, 5, 6],
@@ -305,7 +305,7 @@ async fn test_tx_settlement_duplicates() -> Result<()> {
     let proof_c2 = ProofTransaction {
         contract_name: "c2.hyle".into(),
         proof: ProofData(
-            borsh::to_vec(&vec![make_hyle_output_with_state(
+            borsh::to_vec(&vec![make_hyli_output_with_state(
                 tx.clone(),
                 BlobIndex(1),
                 &[8, 8, 8],
@@ -327,7 +327,7 @@ async fn test_tx_settlement_duplicates() -> Result<()> {
 
     let tx_hashed = tx.hashed();
     client.send_tx_blob(tx).await.unwrap();
-    hyle_node.wait_for_n_blocks(1).await?;
+    hyli_node.wait_for_n_blocks(1).await?;
 
     let contract = client.get_contract("c1".into()).await?;
     assert_eq!(contract.state_commitment.0, vec![4, 5, 6]);
@@ -341,9 +341,9 @@ async fn test_tx_settlement_duplicates() -> Result<()> {
     client.send_tx_proof(proof_c2).await.unwrap();
 
     info!("➡️  Waiting for TX to be settled - second time");
-    hyle_node.wait_for_settled_tx(tx_hashed).await?;
+    hyli_node.wait_for_settled_tx(tx_hashed).await?;
     // Wait a block on top to make sure the state is updated.
-    hyle_node.wait_for_n_blocks(1).await?;
+    hyli_node.wait_for_n_blocks(1).await?;
 
     info!("➡️  Getting contracts");
 
@@ -370,12 +370,12 @@ async fn test_tx_settlement_duplicates() -> Result<()> {
 async fn test_contract_upgrade() -> Result<()> {
     let builder = NodeIntegrationCtxBuilder::new().await;
     let rest_server_port = builder.conf.rest_server_port;
-    let mut hyle_node = builder.build().await?;
+    let mut hyli_node = builder.build().await?;
 
-    hyle_node.wait_for_genesis_event().await?;
+    hyli_node.wait_for_genesis_event().await?;
 
     let client = NodeApiHttpClient::new(format!("http://localhost:{rest_server_port}/")).unwrap();
-    hyle_node.wait_for_rest_api(&client).await?;
+    hyli_node.wait_for_rest_api(&client).await?;
 
     info!("➡️  Registering contracts c1.hyle");
 
@@ -383,7 +383,7 @@ async fn test_contract_upgrade() -> Result<()> {
     let b1_hashed = b1.hashed();
     client.send_tx_blob(b1).await.unwrap();
 
-    hyle_node.wait_for_settled_tx(b1_hashed).await?;
+    hyli_node.wait_for_settled_tx(b1_hashed).await?;
 
     let contract = client.get_contract("c1.hyle".into()).await?;
     assert_eq!(contract.program_id, ProgramId(vec![1, 2, 3]));
@@ -402,10 +402,10 @@ async fn test_contract_upgrade() -> Result<()> {
     );
     client.send_tx_blob(b2.clone()).await.unwrap();
 
-    let mut hyle_output =
-        make_hyle_output_with_state(b2.clone(), BlobIndex(0), &[1, 2, 3], &[8, 8, 8]);
+    let mut hyli_output =
+        make_hyli_output_with_state(b2.clone(), BlobIndex(0), &[1, 2, 3], &[8, 8, 8]);
 
-    hyle_output
+    hyli_output
         .onchain_effects
         .push(OnchainEffect::RegisterContract(RegisterContractEffect {
             verifier: "test".into(),
@@ -418,15 +418,15 @@ async fn test_contract_upgrade() -> Result<()> {
 
     let proof_update = ProofTransaction {
         contract_name: "c1.hyle".into(),
-        proof: ProofData(borsh::to_vec(&vec![hyle_output]).unwrap()),
+        proof: ProofData(borsh::to_vec(&vec![hyli_output]).unwrap()),
     };
 
     client.send_tx_proof(proof_update).await.unwrap();
 
     info!("➡️  Waiting for TX to be settled");
-    hyle_node.wait_for_settled_tx(b2.hashed()).await?;
+    hyli_node.wait_for_settled_tx(b2.hashed()).await?;
     // Wait a block on top to make sure the state is updated.
-    hyle_node.wait_for_n_blocks(1).await?;
+    hyli_node.wait_for_n_blocks(1).await?;
 
     info!("➡️  Getting contracts");
 

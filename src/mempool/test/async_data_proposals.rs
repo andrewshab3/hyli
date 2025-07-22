@@ -4,7 +4,7 @@ use std::time::Duration;
 
 use anyhow::{bail, Result};
 use assertables::assert_ok;
-use hyle_contract_sdk::{Blob, BlobData, HyleOutput, Identity, ProgramId, StateCommitment};
+use hyli_contract_sdk::{Blob, BlobData, HyleOutput, Identity, ProgramId, StateCommitment};
 use tracing::info;
 
 use crate::bus::command_response::Query;
@@ -191,7 +191,7 @@ async fn impl_test_mempool_isnt_blocked_by_proof_verification() -> Result<()> {
                     original_proof_hash: proof_hash.clone(),
                     blob_tx_hash: blob_tx_hash.clone(),
                     program_id: ProgramId(vec![]),
-                    hyle_output: HyleOutput::default(),
+                    hyli_output: HyleOutput::default(),
                 }],
                 is_recursive: false,
                 proof_size: proof.0.len(),

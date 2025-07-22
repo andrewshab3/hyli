@@ -38,9 +38,9 @@ pub mod utils;
 
 use caller::ExecutionContext;
 // re-export hyle-model
-pub use hyle_model::*;
+pub use hyli_model::*;
 
-pub use hyle_model::utils as hyle_model_utils;
+pub use hyli_model::utils as hyli_model_utils;
 
 #[cfg(feature = "tracing")]
 pub use tracing;
@@ -89,9 +89,9 @@ expected type. For this, it can call either [utils::parse_raw_calldata] or
 ## Example of execute implementation:
 
 ```rust
-use hyle_contract_sdk::{StateCommitment, RunResult, ZkContract};
-use hyle_contract_sdk::utils::parse_raw_calldata;
-use hyle_model::Calldata;
+use hyli_contract_sdk::{StateCommitment, RunResult, ZkContract};
+use hyli_contract_sdk::utils::parse_raw_calldata;
+use hyli_model::Calldata;
 
 use borsh::{BorshSerialize, BorshDeserialize};
 

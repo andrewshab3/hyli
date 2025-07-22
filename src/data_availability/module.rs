@@ -1,6 +1,6 @@
 use std::collections::BTreeSet;
 
-use hyle_modules::{bus::SharedMessageBus, modules::Module};
+use hyli_modules::{bus::SharedMessageBus, modules::Module};
 
 use crate::model::SharedRunContext;
 

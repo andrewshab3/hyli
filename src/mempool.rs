@@ -19,10 +19,10 @@ use api::RestApiMessage;
 use block_construction::BlockUnderConstruction;
 use borsh::{BorshDeserialize, BorshSerialize};
 use client_sdk::tcp_client::TcpServerMessage;
-use hyle_contract_sdk::{ContractName, ProgramId, Verifier};
-use hyle_crypto::SharedBlstCrypto;
-use hyle_modules::{log_warn, module_bus_client, utils::static_type_map::Pick};
-use hyle_net::{logged_task::logged_task, ordered_join_set::OrderedJoinSet};
+use hyli_contract_sdk::{ContractName, ProgramId, Verifier};
+use hyli_crypto::SharedBlstCrypto;
+use hyli_modules::{log_warn, module_bus_client, utils::static_type_map::Pick};
+use hyli_net::{logged_task::logged_task, ordered_join_set::OrderedJoinSet};
 use indexmap::IndexSet;
 use metrics::MempoolMetrics;
 use serde::{Deserialize, Serialize};
@@ -318,7 +318,7 @@ impl Mempool {
     }
 
     // Optimistically parse Hyli tx blobs
-    fn handle_hyle_contract_registration(&mut self, blob_tx: &BlobTransaction) {
+    fn handle_hyli_contract_registration(&mut self, blob_tx: &BlobTransaction) {
         #[allow(clippy::expect_used, reason = "not held across await")]
         let mut known_contracts = self.known_contracts.write().expect("logic issue");
         blob_tx.blobs.iter().for_each(|blob| {
@@ -691,9 +691,9 @@ pub mod test {
     };
     use anyhow::Result;
     use assertables::assert_ok;
-    use hyle_contract_sdk::StateCommitment;
-    use hyle_crypto::BlstCrypto;
-    use hyle_modules::modules::Module;
+    use hyli_contract_sdk::StateCommitment;
+    use hyli_crypto::BlstCrypto;
+    use hyli_modules::modules::Module;
     use tokio::sync::broadcast::Receiver;
     use utils::TimestampMs;
 
