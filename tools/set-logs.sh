@@ -7,7 +7,7 @@ if [[ -z "$RUST_LOG" ]]; then
 fi
 
 # Liste des modules définis dans le script
-hyle_modules=(
+hyli_modules=(
   "hyle::indexer"
   "hyle::mempool"
   "hyle::mempool::storage"
@@ -44,7 +44,7 @@ add_module() {
   module_list=()
   
   # Pour chaque module défini dans le script, obtenir son niveau actuel
-  for module in "${hyle_modules[@]}"; do
+  for module in "${hyli_modules[@]}"; do
     current_level=$(get_level_for_module "$module")
     
     # Si le module n'a pas de niveau de log défini, utiliser un niveau par défaut

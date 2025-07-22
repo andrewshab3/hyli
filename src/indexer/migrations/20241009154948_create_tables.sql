@@ -63,7 +63,7 @@ CREATE TABLE blob_proof_outputs (
     blob_index INT NOT NULL,            -- Index of the blob within the transaction
     blob_proof_output_index INT NOT NULL, -- Index of the blob proof output within the proof
     contract_name TEXT NOT NULL,       -- Contract name associated with the blob
-    hyle_output JSONB NOT NULL,        -- Additional metadata stored in JSONB format
+    hyli_output JSONB NOT NULL,        -- Additional metadata stored in JSONB format
     settled BOOLEAN NOT NULL,       -- Was this blob proof output used in settlement ? 
     PRIMARY KEY (proof_parent_dp_hash, proof_tx_hash, blob_parent_dp_hash, blob_tx_hash, blob_index, blob_proof_output_index),
     FOREIGN KEY (blob_parent_dp_hash, blob_tx_hash, blob_index) REFERENCES blobs(parent_dp_hash, tx_hash, blob_index) ON DELETE CASCADE,

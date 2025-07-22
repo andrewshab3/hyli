@@ -32,7 +32,7 @@ To launch a single-node devnet (consensus disabled) for building and debugging s
 
 ```bash
 cargo build
-HYLE_RUN_INDEXER=false cargo run
+HYLI_RUN_INDEXER=false cargo run
 ```
 
 Note: if you need sp1 verifier, enable the feature: `sp1`
@@ -84,8 +84,8 @@ If a file named `config.toml` is present, it will be automatically loaded at nod
 Examples of configuration via environment variables:
 
 ```bash
-HYLE_RUN_INDEXER=false
-HYLE_CONSENSUS__SLOT_DURATION=100
+HYLI_RUN_INDEXER=false
+HYLI_CONSENSUS__SLOT_DURATION=100
 ```
 
 ---
@@ -104,7 +104,7 @@ docker build . -t hyle
 ### Run Locally with Docker
 
 ```bash
-docker run -v ./db:/hyle/data -e HYLE_RUN_INDEXER=false -p 4321:4321 -p 1234:1234 hyle
+docker run -v ./db:/hyle/data -e HYLI_RUN_INDEXER=false -p 4321:4321 -p 1234:1234 hyle
 ```
 
 > 🛠️ **Note**: If you encounter permission issues with the `/hyle/data` volume, add the `--privileged` flag.
