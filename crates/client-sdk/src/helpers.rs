@@ -19,7 +19,7 @@ pub fn register_hyli_contract(
     constructor_metadata: Option<Vec<u8>>,
 ) -> anyhow::Result<()> {
     builder.add_action(
-        "hyle".into(),
+        "hyli".into(),
         RegisterContractAction {
             contract_name: new_contract_name,
             verifier,

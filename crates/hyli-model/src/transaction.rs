@@ -332,7 +332,7 @@ impl BlobTransaction {
 impl From<APIRegisterContract> for BlobTransaction {
     fn from(payload: APIRegisterContract) -> Self {
         BlobTransaction::new(
-            "hyle@hyle",
+            "hyli@hyli",
             vec![RegisterContractAction {
                 verifier: payload.verifier,
                 program_id: payload.program_id,
@@ -345,7 +345,7 @@ impl From<APIRegisterContract> for BlobTransaction {
                 },
                 constructor_metadata: payload.constructor_metadata,
             }
-            .as_blob("hyle".into(), None, None)],
+            .as_blob("hyli".into(), None, None)],
         )
     }
 }

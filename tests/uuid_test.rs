@@ -47,7 +47,7 @@ async fn test_uuid_registration() {
     std::env::set_var("RISC0_DEV_MODE", "1");
 
     let ctx = E2ECtx::new_multi_with_indexer(2, 500).await.unwrap();
-    ctx.register_contract::<UuidContract>("hyle@hyle".into(), "uuid")
+    ctx.register_contract::<UuidContract>("hyli@hyli".into(), "uuid")
         .await
         .unwrap();
 

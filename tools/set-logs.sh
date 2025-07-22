@@ -8,14 +8,14 @@ fi
 
 # Liste des modules définis dans le script
 hyli_modules=(
-  "hyle::indexer"
-  "hyle::mempool"
-  "hyle::mempool::storage"
-  "hyle::p2p"
-  "hyle::node_state"
-  "hyle::data_availability"
-  "hyle::single_node_consensus"
-  "hyle::consensus"
+  "hyli::indexer"
+  "hyli::mempool"
+  "hyli::mempool::storage"
+  "hyli::p2p"
+  "hyli::node_state"
+  "hyli::data_availability"
+  "hyli::single_node_consensus"
+  "hyli::consensus"
   "sqlx::query"
   "risc0_zkvm"
   "tower_http"

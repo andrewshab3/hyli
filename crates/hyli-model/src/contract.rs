@@ -563,7 +563,7 @@ pub enum OnchainEffect {
 }
 
 /// This struct has to be the zkvm committed output. It will be used by
-/// hyle node to verify & settle the blob transaction.
+/// hyli node to verify & settle the blob transaction.
 #[derive(
     Default, Serialize, Deserialize, Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize,
 )]

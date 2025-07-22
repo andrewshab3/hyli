@@ -96,18 +96,18 @@ HYLI_CONSENSUS__SLOT_DURATION=100
 
 ```bash
 # Build the dependency image, this is a cache layer for faster iteration builds
-docker build . -t hyle-dep -f Dockerfile.dependencies
+docker build . -t hyli-dep -f Dockerfile.dependencies
 # Build the node image
-docker build . -t hyle
+docker build . -t hyli
 ```
 
 ### Run Locally with Docker
 
 ```bash
-docker run -v ./db:/hyle/data -e HYLI_RUN_INDEXER=false -p 4321:4321 -p 1234:1234 hyle
+docker run -v ./db:/hyli/data -e HYLI_RUN_INDEXER=false -p 4321:4321 -p 1234:1234 hyli
 ```
 
-> 🛠️ **Note**: If you encounter permission issues with the `/hyle/data` volume, add the `--privileged` flag.
+> 🛠️ **Note**: If you encounter permission issues with the `/hyli/data` volume, add the `--privileged` flag.
 
 ---
 

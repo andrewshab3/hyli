@@ -115,7 +115,7 @@ impl TestProcess {
         let mut cargo_bin: Command = std::process::Command::cargo_bin(command).unwrap().into();
 
         // Create a temporary directory for the node
-        let tmpdir = tempfile::Builder::new().prefix("hyle").tempdir().unwrap();
+        let tmpdir = tempfile::Builder::new().prefix("hyli").tempdir().unwrap();
         let cmd = cargo_bin.current_dir(&tmpdir);
         cmd.kill_on_drop(true);
         cmd.stdout(std::process::Stdio::piped());

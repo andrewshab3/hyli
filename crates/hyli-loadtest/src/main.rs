@@ -8,10 +8,10 @@ use hyli_loadtest::{
 };
 use tracing::{info, Level};
 
-/// A cli to interact with hyle node
+/// A cli to interact with hyli node
 #[derive(Debug, Parser)] // requires `derive` feature
 #[command(name = "loadtest")]
-#[command(about = "A CLI to loadtest hyle", long_about = None)]
+#[command(about = "A CLI to loadtest hyli", long_about = None)]
 struct Args {
     #[command(subcommand)]
     command: SendCommands,

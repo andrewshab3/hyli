@@ -83,13 +83,13 @@ pub async fn send_blob_transaction(
 
     // Filter out incorrect contract-registring transactions
     for blob in payload.blobs.iter() {
-        if blob.contract_name.0 != "hyle" {
+        if blob.contract_name.0 != "hyli" {
             continue;
         }
         if let Ok(tx) = StructuredBlobData::<RegisterContractAction>::try_from(blob.data.clone()) {
             let parameters = tx.parameters;
             validate_contract_registration_metadata(
-                &"hyle".into(),
+                &"hyli".into(),
                 &parameters.contract_name,
                 &parameters.verifier,
                 &parameters.program_id,
@@ -145,7 +145,7 @@ pub async fn register_contract(
     State(state): State<RouterState>,
     Json(payload): Json<APIRegisterContract>,
 ) -> Result<impl IntoResponse, AppError> {
-    let owner = "hyle".into();
+    let owner = "hyli".into();
     validate_contract_registration_metadata(
         &owner,
         &payload.contract_name,

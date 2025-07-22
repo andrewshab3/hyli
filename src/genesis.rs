@@ -524,7 +524,7 @@ impl Genesis {
         .build();
 
         let mut map = BTreeMap::default();
-        map.insert("hyle".into(), ProgramId(vec![0, 0, 0, 0]));
+        map.insert("hyli".into(), ProgramId(vec![0, 0, 0, 0]));
         map.insert("blst".into(), NativeVerifiers::Blst.into());
         map.insert("sha3_256".into(), NativeVerifiers::Sha3_256.into());
         map.insert("secp256k1".into(), NativeVerifiers::Secp256k1.into());
@@ -539,7 +539,7 @@ impl Genesis {
             ProgramId(hyli_contracts::RISC0_RECURSION_ID.to_vec()),
         );
 
-        let mut register_tx = ProvableBlobTx::new("hyle@hyle".into());
+        let mut register_tx = ProvableBlobTx::new("hyli@hyli".into());
 
         let hyli_contract = hyli_contract_definition();
 
@@ -552,7 +552,7 @@ impl Genesis {
             Some(hyli_contract.timeout_window),
             None,
         )
-        .expect("register hyle");
+        .expect("register hyli");
 
         register_hyli_contract(
             &mut register_tx,

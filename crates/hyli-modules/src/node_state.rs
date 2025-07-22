@@ -160,18 +160,18 @@ pub struct NodeStateStore {
     unsettled_transactions: OrderedTxMap,
 }
 
-/// Make sure we register the hyle contract with the same values before genesis, and in the genesis block
+/// Make sure we register the hyli contract with the same values before genesis, and in the genesis block
 pub fn hyli_contract_definition() -> Contract {
     Contract {
-        name: "hyle".into(),
+        name: "hyli".into(),
         program_id: ProgramId(vec![0, 0, 0, 0]),
         state: StateCommitment::default(),
-        verifier: Verifier("hyle".to_owned()),
+        verifier: Verifier("hyli".to_owned()),
         timeout_window: TimeoutWindow::NoTimeout,
     }
 }
 
-// TODO: we should register the 'hyle' TLD in the genesis block.
+// TODO: we should register the 'hyli' TLD in the genesis block.
 impl Default for NodeStateStore {
     fn default() -> Self {
         let mut ret = Self {
@@ -431,13 +431,13 @@ impl NodeState {
 
         let mut should_try_and_settle = true;
 
-        // Reject blob Tx with blobs for the 'hyle' contract if:
+        // Reject blob Tx with blobs for the 'hyli' contract if:
         // - the identity is not the TLD itself for a DeleteContractAction
         // - the NukeTxAction is not signed with the HyliPubKey itself
         // No need to wait settlement, as this is a static check.
         if let Err(validation_error) = validate_hyli_contract_blobs(tx) {
             bail!(
-                "Blob Transaction contains invalid blobs for 'hyle' contract: {}",
+                "Blob Transaction contains invalid blobs for 'hyli' contract: {}",
                 validation_error
             );
         }
@@ -492,8 +492,8 @@ impl NodeState {
                             },
                         ));
                     }
-                } else if blob.contract_name.0 == "hyle" {
-                    // 'hyle' is a special case -> See settlement logic.
+                } else if blob.contract_name.0 == "hyli" {
+                    // 'hyli' is a special case -> See settlement logic.
                 } else {
                     should_try_and_settle = false;
                 }
@@ -711,7 +711,7 @@ impl NodeState {
         let settlement_result = if
         /*
         Fail fast: try to find a stateless (native verifiers are considered stateless for now) contract
-        with a hyle output to success false (in all possible combinations)
+        with a hyli output to success false (in all possible combinations)
         */
         unsettled_tx.blobs.values().any(|blob| {
             NATIVE_VERIFIERS_CONTRACT_LIST.contains(&blob.blob.contract_name.0.as_str())
@@ -804,10 +804,10 @@ impl NodeState {
         let contract_name = &current_blob.blob.contract_name;
         blob_proof_output_indices.push(0);
 
-        // Super special case - the hyle contract has "synthetic proofs".
+        // Super special case - the hyli contract has "synthetic proofs".
         // We need to check the current state of 'current_contracts' to check validity,
         // so we really can't do this before we've settled the earlier blobs.
-        if contract_name.0 == "hyle" {
+        if contract_name.0 == "hyli" {
             tracing::trace!("Settlement - processing for Hyle");
             return match handle_blob_for_hyli_tld(
                 contracts,
@@ -827,7 +827,7 @@ impl NodeState {
                 }
                 Err(err) => {
                     // We have a valid proof of failure, we short-circuit.
-                    let msg = format!("Could not settle blob proof output for 'hyle': {err:?}");
+                    let msg = format!("Could not settle blob proof output for 'hyli': {err:?}");
                     debug!("{msg}");
                     events.push(TransactionStateEvent::SettleEvent(msg));
                     SettlementResult {
@@ -973,7 +973,7 @@ impl NodeState {
 
             let blob = blob_metadata.blob;
 
-            if blob.contract_name.0 == "hyle" {
+            if blob.contract_name.0 == "hyli" {
                 // Keep track of all txs to nuke
                 if let Ok(data) = StructuredBlobData::<NukeTxAction>::try_from(blob.data.clone()) {
                     txs_to_nuke.extend(data.parameters.txs.clone());
@@ -1575,7 +1575,7 @@ pub mod test {
 
     pub fn make_register_contract_tx(name: ContractName) -> BlobTransaction {
         BlobTransaction::new(
-            "hyle@hyle",
+            "hyli@hyli",
             vec![RegisterContractAction {
                 verifier: "test".into(),
                 program_id: ProgramId(vec![]),
@@ -1583,7 +1583,7 @@ pub mod test {
                 contract_name: name,
                 ..Default::default()
             }
-            .as_blob("hyle".into(), None, None)],
+            .as_blob("hyli".into(), None, None)],
         )
     }
     pub fn make_register_contract_tx_with_actions(
@@ -1598,12 +1598,12 @@ pub mod test {
                 contract_name: name,
                 ..Default::default()
             }
-            .as_blob("hyle".into(), None, None)],
+            .as_blob("hyli".into(), None, None)],
             blobs,
         ]
         .concat();
 
-        BlobTransaction::new("hyle@hyle", list)
+        BlobTransaction::new("hyli@hyli", list)
     }
 
     pub fn make_register_contract_effect(contract_name: ContractName) -> RegisterContractEffect {

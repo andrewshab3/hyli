@@ -6,7 +6,7 @@ In this crate you will find some helpers function to build your Smart Contract o
 
 ## Model
 
-Some of the models are defined in `hyle-model` crates, which is re-exported by this crate.
+Some of the models are defined in `hyli-model` crates, which is re-exported by this crate.
 
 For example, you can do either of these two:
 

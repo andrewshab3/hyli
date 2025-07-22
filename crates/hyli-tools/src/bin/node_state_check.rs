@@ -107,7 +107,7 @@ impl Conf {
         }
         let conf: Self = s
             .add_source(
-                config::Environment::with_prefix("hyle")
+                config::Environment::with_prefix("hyli")
                     .separator("__")
                     .prefix_separator("_"),
             )

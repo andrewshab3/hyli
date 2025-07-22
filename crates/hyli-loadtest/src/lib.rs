@@ -134,7 +134,7 @@ pub async fn setup_hyllar(users: u32) -> Result<Hyllar> {
 /// Create a new contract "hyllar_test" that already contains entries for each users
 pub async fn setup(hyllar: Hyllar, url: String, verifier: String) -> Result<()> {
     let tx = BlobTransaction::new(
-        Identity::new("hyle@hyle"),
+        Identity::new("hyli@hyli"),
         vec![RegisterContractAction {
             contract_name: "hyllar_test".into(),
             verifier: verifier.into(),
@@ -142,7 +142,7 @@ pub async fn setup(hyllar: Hyllar, url: String, verifier: String) -> Result<()> 
             state_commitment: hyllar.commit(),
             ..Default::default()
         }
-        .as_blob("hyle".into(), None, None)],
+        .as_blob("hyli".into(), None, None)],
     );
 
     let mut client = TcpApiClient::connect("loadtest_client".to_string(), url)
@@ -427,7 +427,7 @@ pub async fn long_running_test(node_url: String, use_test_verifier: bool) -> Res
             false => hyli_contract_sdk::Verifier("risc0-1".to_string()),
         };
         let tx = BlobTransaction::new(
-            Identity::new("hyle@hyle"),
+            Identity::new("hyli@hyli"),
             vec![
                 RegisterContractAction {
                     contract_name: random_hyllar_contract.clone(),
@@ -437,7 +437,7 @@ pub async fn long_running_test(node_url: String, use_test_verifier: bool) -> Res
                         .commit(),
                     ..Default::default()
                 }
-                .as_blob("hyle".into(), None, None),
+                .as_blob("hyli".into(), None, None),
                 RegisterContractAction {
                     contract_name: random_hydentity_contract.clone(),
                     verifier: verifier.clone(),
@@ -445,7 +445,7 @@ pub async fn long_running_test(node_url: String, use_test_verifier: bool) -> Res
                     state_commitment: Hydentity::default().commit(),
                     ..Default::default()
                 }
-                .as_blob("hyle".into(), None, None),
+                .as_blob("hyli".into(), None, None),
             ],
         );
 
@@ -634,7 +634,7 @@ pub async fn long_running_test(node_url: String, use_test_verifier: bool) -> Res
 
 pub async fn send_massive_blob(users: u32, url: String) -> Result<()> {
     let tx = BlobTransaction::new(
-        Identity::new("hyle@hyle"),
+        Identity::new("hyli@hyli"),
         vec![RegisterContractAction {
             contract_name: "massive_blob_test".into(),
             verifier: "test".into(),
@@ -643,7 +643,7 @@ pub async fn send_massive_blob(users: u32, url: String) -> Result<()> {
             timeout_window: Some(TimeoutWindow::Timeout(hyli_contract_sdk::BlockHeight(2))),
             ..Default::default()
         }
-        .as_blob("hyle".into(), None, None)],
+        .as_blob("hyli".into(), None, None)],
     );
 
     let mut client = TcpApiClient::connect("loadtest_client".to_string(), url.clone())

@@ -458,7 +458,7 @@ impl super::Mempool {
             .iter()
             .find_map(|tx| match &tx.transaction_data {
                 TransactionData::Blob(tx) => tx.blobs.iter().find_map(|blob| {
-                    if blob.contract_name.0 == "hyle" {
+                    if blob.contract_name.0 == "hyli" {
                         if let Ok(tx) = StructuredBlobData::<RegisterContractAction>::try_from(
                             blob.data.clone(),
                         ) {

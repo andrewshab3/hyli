@@ -142,7 +142,7 @@ mod e2e_amm {
         ///////////////////// hyllar2 contract registration /////////////////
         info!("➡️  Registring hyllar2 contract");
         const HYLLAR2_CONTRACT_NAME: &str = "hyllar2";
-        ctx.register_contract::<HyllarTestContract>("hyle@hyle".into(), HYLLAR2_CONTRACT_NAME)
+        ctx.register_contract::<HyllarTestContract>("hyli@hyli".into(), HYLLAR2_CONTRACT_NAME)
             .await?;
         /////////////////////////////////////////////////////////////////////
 
@@ -253,7 +253,7 @@ mod e2e_amm {
         ///////////////////// amm contract registration /////////////////////
         info!("➡️  Registring amm contract");
         const AMM_CONTRACT_NAME: &str = "amm";
-        ctx.register_contract::<AmmTestContract>("hyle@hyle".into(), AMM_CONTRACT_NAME)
+        ctx.register_contract::<AmmTestContract>("hyli@hyli".into(), AMM_CONTRACT_NAME)
             .await?;
         /////////////////////////////////////////////////////////////////////
 

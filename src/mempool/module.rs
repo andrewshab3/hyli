@@ -61,8 +61,8 @@ impl Module for Mempool {
             .write()
             .expect("logic issue")
             .0
-            .entry("hyle".into())
-            .or_insert_with(|| (Verifier("hyle".to_owned()), ProgramId(vec![])));
+            .entry("hyli".into())
+            .or_insert_with(|| (Verifier("hyli".to_owned()), ProgramId(vec![])));
 
         Ok(Mempool {
             bus,

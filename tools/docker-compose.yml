@@ -1,5 +1,5 @@
 services:
-  hyle1:
+  hyli1:
     build: ./..
     privileged: true
     network_mode: host
@@ -11,11 +11,11 @@ services:
       - HYLI_TCP_ADDRESS=localhost:1414
       - RUST_LOG=debug
       - HYLI_CONSENSUS__SLOT_DURATION=3000
-  hyle2:
+  hyli2:
     build: ./..
     privileged: true
     environment:
-      - HYLI_ID=hyle2
+      - HYLI_ID=hyli2
       - HYLI_P2P__PEERS=localhost:1001
       - HYLI_REST_ADDRESS=localhost:4002
       - HYLI_P2P__ADDRESS=localhost:1002
@@ -25,12 +25,12 @@ services:
       - HYLI_CONSENSUS__SLOT_DURATION=3000
     network_mode: host
     depends_on:
-      - hyle1
-  hyle3:
+      - hyli1
+  hyli3:
     build: ./..
     privileged: true
     environment:
-      - HYLI_ID=hyle3
+      - HYLI_ID=hyli3
       - HYLI_P2P__PEERS=localhost:1001,localhost:1002
       - HYLI_REST_ADDRESS=localhost:4003
       - HYLI_P2P__ADDRESS=localhost:1003
@@ -40,12 +40,12 @@ services:
       - HYLI_CONSENSUS__SLOT_DURATION=3000
     network_mode: host
     depends_on:
-      - hyle1
-  hyle4:
+      - hyli1
+  hyli4:
     build: ./..
     privileged: true
     environment:
-      - HYLI_ID=hyle4
+      - HYLI_ID=hyli4
       - HYLI_P2P__PEERS=localhost:1001,localhost:1002,localhost:1003
       - HYLI_REST_ADDRESS=localhost:4004
       - HYLI_P2P__ADDRESS=localhost:1004
@@ -54,7 +54,7 @@ services:
       - HYLI_CONSENSUS__SLOT_DURATION=3000
     network_mode: host
     depends_on:
-      - hyle1
+      - hyli1
 
   prometheus:
     image: prom/prometheus:latest
@@ -66,10 +66,10 @@ services:
       - "9090:9090" # Port pour accéder à l'interface de Prometheus
     network_mode: host
     depends_on:
-      - hyle1
-      - hyle2
-      - hyle3
-      - hyle4
+      - hyli1
+      - hyli2
+      - hyli3
+      - hyli4
 
   grafana:
     image: grafana/grafana:latest

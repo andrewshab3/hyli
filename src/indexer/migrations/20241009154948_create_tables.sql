@@ -54,7 +54,7 @@ CREATE TABLE proofs (
     PRIMARY KEY (tx_hash, parent_dp_hash)
 );
 
--- This table stores one line for each hyle output in a VerifiedProof
+-- This table stores one line for each hyli output in a VerifiedProof
 CREATE TABLE blob_proof_outputs (
     blob_parent_dp_hash  TEXT NOT NULL,         -- Foreign key linking to the BlobTransactions    
     blob_tx_hash  TEXT NOT NULL,         -- Foreign key linking to the BlobTransactions    

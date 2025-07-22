@@ -248,7 +248,7 @@ mod test {
         state_commitment: StateCommitment,
     ) -> BlobTransaction {
         BlobTransaction::new(
-            "hyle@hyle",
+            "hyli@hyli",
             vec![RegisterContractAction {
                 verifier: "test".into(),
                 program_id: ProgramId(vec![3, 2, 1]),
@@ -256,7 +256,7 @@ mod test {
                 contract_name,
                 ..Default::default()
             }
-            .as_blob("hyle".into(), None, None)],
+            .as_blob("hyli".into(), None, None)],
         )
     }
 
@@ -873,8 +873,8 @@ mod test {
             ],
         );
 
-        let delete_a = new_delete_tx(ContractName::new("hyle"), ContractName::new("a"));
-        let delete_c = new_delete_tx(ContractName::new("hyle"), ContractName::new("c"));
+        let delete_a = new_delete_tx(ContractName::new("hyli"), ContractName::new("a"));
+        let delete_c = new_delete_tx(ContractName::new("hyli"), ContractName::new("c"));
 
         let delete_a_proof = new_proof_tx(
             "hyli@wallet".into(),
@@ -903,7 +903,7 @@ mod test {
             ],
         );
 
-        let delete_b = new_delete_tx(ContractName::new("hyle"), ContractName::new("b"));
+        let delete_b = new_delete_tx(ContractName::new("hyli"), ContractName::new("b"));
         let delete_b_proof = new_proof_tx(
             "hyli@wallet".into(),
             "wallet".into(),
@@ -913,7 +913,7 @@ mod test {
             StateCommitment(vec![3]),
         );
 
-        let delete_a = new_delete_tx(ContractName::new("hyle"), ContractName::new("a"));
+        let delete_a = new_delete_tx(ContractName::new("hyli"), ContractName::new("a"));
         let delete_a_proof = new_proof_tx(
             "hyli@wallet".into(),
             "wallet".into(),
@@ -923,7 +923,7 @@ mod test {
             StateCommitment(vec![4]),
         );
 
-        let delete_d = new_delete_tx(ContractName::new("hyle"), ContractName::new("d"));
+        let delete_d = new_delete_tx(ContractName::new("hyli"), ContractName::new("d"));
         let delete_d_proof = new_proof_tx(
             "hyli@wallet".into(),
             "wallet".into(),

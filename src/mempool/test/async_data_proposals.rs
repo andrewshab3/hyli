@@ -56,7 +56,7 @@ async fn impl_test_mempool_isnt_blocked_by_proof_verification() -> Result<()> {
             vec![DataProposal::new(
                 None,
                 vec![BlobTransaction::new(
-                    "test@hyle",
+                    "test@hyli",
                     vec![RegisterContractAction {
                         verifier: "test-slow".into(),
                         program_id: ProgramId(vec![]),
@@ -64,7 +64,7 @@ async fn impl_test_mempool_isnt_blocked_by_proof_verification() -> Result<()> {
                         contract_name: contract_name.clone(),
                         ..Default::default()
                     }
-                    .as_blob("hyle".into(), None, None)],
+                    .as_blob("hyli".into(), None, None)],
                 )
                 .into()],
             )],

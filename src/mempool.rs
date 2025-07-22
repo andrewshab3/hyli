@@ -322,7 +322,7 @@ impl Mempool {
         #[allow(clippy::expect_used, reason = "not held across await")]
         let mut known_contracts = self.known_contracts.write().expect("logic issue");
         blob_tx.blobs.iter().for_each(|blob| {
-            if blob.contract_name.0 != "hyle" {
+            if blob.contract_name.0 != "hyli" {
                 return;
             }
             if let Ok(tx) =
@@ -1120,7 +1120,7 @@ pub mod test {
 
     pub fn make_register_contract_tx(name: ContractName) -> Transaction {
         BlobTransaction::new(
-            "hyle@hyle",
+            "hyli@hyli",
             vec![RegisterContractAction {
                 verifier: "test".into(),
                 program_id: ProgramId(vec![]),
@@ -1128,7 +1128,7 @@ pub mod test {
                 contract_name: name,
                 ..Default::default()
             }
-            .as_blob("hyle".into(), None, None)],
+            .as_blob("hyli".into(), None, None)],
         )
         .into()
     }

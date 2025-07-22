@@ -20,7 +20,7 @@ use crate::fixtures::{test_helpers::wait_height, turmoil::TurmoilCtx};
 
 pub fn make_register_contract_tx(name: ContractName) -> BlobTransaction {
     BlobTransaction::new(
-        "hyle@hyle",
+        "hyli@hyli",
         vec![RegisterContractAction {
             verifier: "test".into(),
             program_id: ProgramId(vec![]),
@@ -28,7 +28,7 @@ pub fn make_register_contract_tx(name: ContractName) -> BlobTransaction {
             contract_name: name,
             ..Default::default()
         }
-        .as_blob("hyle".into(), None, None)],
+        .as_blob("hyli".into(), None, None)],
     )
 }
 

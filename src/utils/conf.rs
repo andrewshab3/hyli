@@ -177,7 +177,7 @@ impl Conf {
         }
         let mut conf: Self = s
             .add_source(
-                Environment::with_prefix("hyle")
+                Environment::with_prefix("hyli")
                     .separator("__")
                     .prefix_separator("_")
                     .list_separator(",")

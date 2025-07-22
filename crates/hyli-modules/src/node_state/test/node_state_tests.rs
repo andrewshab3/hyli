@@ -1242,7 +1242,7 @@ async fn test_tx_with_hyli_blob_should_have_specific_timeout_after_block445_000(
     let mut state = new_node_state().await;
 
     let tx1 = BlobTransaction::new(
-        "hyle@hyle",
+        "hyli@hyli",
         vec![RegisterContractAction {
             verifier: "test".into(),
             program_id: ProgramId(vec![]),
@@ -1250,13 +1250,13 @@ async fn test_tx_with_hyli_blob_should_have_specific_timeout_after_block445_000(
             contract_name: ContractName::new("a1"),
             ..Default::default()
         }
-        .as_blob("hyle".into(), None, None)],
+        .as_blob("hyli".into(), None, None)],
     );
 
     let tx1_hash = tx1.hashed();
 
     let tx2 = BlobTransaction::new(
-        "hyle@hyle",
+        "hyli@hyli",
         vec![
             new_blob("a1"),
             RegisterContractAction {
@@ -1266,14 +1266,14 @@ async fn test_tx_with_hyli_blob_should_have_specific_timeout_after_block445_000(
                 contract_name: ContractName::new("c1"),
                 ..Default::default()
             }
-            .as_blob("hyle".into(), None, None),
+            .as_blob("hyli".into(), None, None),
         ],
     );
 
     let tx2_hash = tx2.hashed();
 
     let tx3 = BlobTransaction::new(
-        "hyle@hyle",
+        "hyli@hyli",
         vec![
             new_blob("a1"),
             RegisterContractAction {
@@ -1283,7 +1283,7 @@ async fn test_tx_with_hyli_blob_should_have_specific_timeout_after_block445_000(
                 contract_name: ContractName::new("c2"),
                 ..Default::default()
             }
-            .as_blob("hyle".into(), None, None),
+            .as_blob("hyli".into(), None, None),
         ],
     );
 
@@ -1307,7 +1307,7 @@ async fn test_tx_with_hyli_blob_should_have_specific_timeout_after_block445_000(
     assert!(state.unsettled_transactions.get(&tx2_hash).is_none());
 }
 
-// Check hyle-modules/src/node_state.rs l127 for the timeout window value
+// Check hyli-modules/src/node_state.rs l127 for the timeout window value
 #[test_log::test(tokio::test)]
 async fn test_tx_with_hyli_blob_should_have_specific_timeout() {
     let hyli_timeout_window = TimeoutWindow::NoTimeout;
@@ -1624,9 +1624,9 @@ async fn test_nuke_transaction_forces_target_to_fail() {
 
     // Register contract_a and secp256k1 contracts
     let contract_a = ContractName::new("contract_a");
-    let hyli_identity = Identity::new("hyle@hyle");
+    let hyli_identity = Identity::new("hyli@hyli");
     let register_contract_a =
-        make_register_tx(hyli_identity.clone(), "hyle".into(), contract_a.clone());
+        make_register_tx(hyli_identity.clone(), "hyli".into(), contract_a.clone());
 
     // Create three normal transactions
     let tx1 = BlobTransaction::new(
@@ -1674,7 +1674,7 @@ async fn test_nuke_transaction_forces_target_to_fail() {
             (tx3_hash.clone(), vec![hyli_output_tx3]),
         ]),
     };
-    let nuke_blob = nuke_action.as_blob("hyle".into(), None, None);
+    let nuke_blob = nuke_action.as_blob("hyli".into(), None, None);
 
     // Create secp256k1 blob that signs the transaction hash data
     let expected_data = borsh::to_vec(&nuke_action.txs).unwrap();
@@ -1682,7 +1682,7 @@ async fn test_nuke_transaction_forces_target_to_fail() {
     let (data_hash, signature) = sign_data(&secret_key, &expected_data);
 
     let secp_blob_data = Secp256k1Blob {
-        identity: Identity::new("hyle@hyle"),
+        identity: Identity::new("hyli@hyli"),
         data: data_hash,
         public_key: public_key.serialize(),
         signature,
@@ -1690,7 +1690,7 @@ async fn test_nuke_transaction_forces_target_to_fail() {
 
     let secp_blob = secp_blob_data.as_blob();
 
-    let nuke_tx = BlobTransaction::new(Identity::new("hyle@hyle"), vec![secp_blob, nuke_blob]);
+    let nuke_tx = BlobTransaction::new(Identity::new("hyli@hyli"), vec![secp_blob, nuke_blob]);
     let nuke_tx_hash = nuke_tx.hashed();
 
     // Submit nuke transaction (secp256k1 is native so no proof needed)

@@ -37,7 +37,7 @@ pub mod secp256k1;
 pub mod utils;
 
 use caller::ExecutionContext;
-// re-export hyle-model
+// re-export hyli-model
 pub use hyli_model::*;
 
 pub use hyli_model::utils as hyli_model_utils;

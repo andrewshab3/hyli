@@ -25,7 +25,7 @@ fn make_register_blob_action(
     state_commitment: StateCommitment,
 ) -> BlobTransaction {
     BlobTransaction::new(
-        "hyle@hyle",
+        "hyli@hyli",
         vec![RegisterContractAction {
             verifier: "test".into(),
             program_id: ProgramId(vec![1, 2, 3]),
@@ -33,7 +33,7 @@ fn make_register_blob_action(
             contract_name,
             ..Default::default()
         }
-        .as_blob("hyle".into(), None, None)],
+        .as_blob("hyli".into(), None, None)],
     )
 }
 
@@ -62,7 +62,7 @@ async fn test_full_settlement_flow() -> Result<()> {
     let client = NodeApiHttpClient::new(format!("http://localhost:{rest_server_port}/")).unwrap();
     hyli_node.wait_for_rest_api(&client).await?;
 
-    info!("➡️  Registering contracts c1 & c2.hyle");
+    info!("➡️  Registering contracts c1 & c2.hyli");
 
     let b1 = make_register_blob_action("c1".into(), StateCommitment(vec![1, 2, 3]));
     client.send_tx_blob(b1).await.unwrap();
@@ -71,29 +71,29 @@ async fn test_full_settlement_flow() -> Result<()> {
             verifier: "test".into(),
             program_id: ProgramId(vec![1, 2, 3]),
             state_commitment: StateCommitment(vec![7, 7, 7]),
-            contract_name: "c2.hyle".into(),
+            contract_name: "c2.hyli".into(),
             ..Default::default()
         })
         .await
         .unwrap();
 
-    info!("➡️  Sending blobs for c1 & c2.hyle");
+    info!("➡️  Sending blobs for c1 & c2.hyli");
     let tx = BlobTransaction::new(
-        "test@c2.hyle",
+        "test@c2.hyli",
         vec![
             Blob {
                 contract_name: "c1".into(),
                 data: BlobData(vec![0, 1, 2, 3]),
             },
             Blob {
-                contract_name: "c2.hyle".into(),
+                contract_name: "c2.hyli".into(),
                 data: BlobData(vec![0, 1, 2, 3]),
             },
         ],
     );
     client.send_tx_blob(tx.clone()).await.unwrap();
 
-    info!("➡️  Sending proof for c1 & c2.hyle");
+    info!("➡️  Sending proof for c1 & c2.hyli");
     let proof_c1 = ProofTransaction {
         contract_name: "c1".into(),
         proof: ProofData(
@@ -107,7 +107,7 @@ async fn test_full_settlement_flow() -> Result<()> {
         ),
     };
     let proof_c2 = ProofTransaction {
-        contract_name: "c2.hyle".into(),
+        contract_name: "c2.hyli".into(),
         proof: ProofData(
             borsh::to_vec(&vec![make_hyli_output_with_state(
                 tx.clone(),
@@ -131,7 +131,7 @@ async fn test_full_settlement_flow() -> Result<()> {
     let contract = client.get_contract("c1".into()).await?;
     assert_eq!(contract.state_commitment.0, vec![4, 5, 6]);
 
-    let contract = client.get_contract("c2.hyle".into()).await?;
+    let contract = client.get_contract("c2.hyli".into()).await?;
     assert_eq!(contract.state_commitment.0, vec![8, 8, 8]);
 
     // Indexer can take a little longer, retry a few times
@@ -155,7 +155,7 @@ async fn test_full_settlement_flow() -> Result<()> {
 
     let pg_client =
         IndexerApiHttpClient::new(format!("http://localhost:{rest_server_port}/")).unwrap();
-    let contract = pg_client.get_indexer_contract(&"c2.hyle".into()).await?;
+    let contract = pg_client.get_indexer_contract(&"c2.hyli".into()).await?;
     assert_eq!(contract.state_commitment, vec![8, 8, 8]);
 
     Ok(())
@@ -209,7 +209,7 @@ async fn test_tx_settlement_duplicates() -> Result<()> {
             verifier: "test".into(),
             program_id: ProgramId(vec![1, 2, 3]),
             state_commitment: StateCommitment(vec![7, 7, 7]),
-            contract_name: "c2.hyle".into(),
+            contract_name: "c2.hyli".into(),
             ..Default::default()
         })
         .await
@@ -217,20 +217,20 @@ async fn test_tx_settlement_duplicates() -> Result<()> {
     hyli_node.wait_for_n_blocks(1).await?;
 
     let tx = BlobTransaction::new(
-        "test@c2.hyle",
+        "test@c2.hyli",
         vec![
             Blob {
                 contract_name: "c1".into(),
                 data: BlobData(vec![0, 1, 2, 3]),
             },
             Blob {
-                contract_name: "c2.hyle".into(),
+                contract_name: "c2.hyli".into(),
                 data: BlobData(vec![0, 1, 2, 3]),
             },
         ],
     );
 
-    info!("➡️  Sending blobs for c1 & c2.hyle - first time");
+    info!("➡️  Sending blobs for c1 & c2.hyli - first time");
 
     // Normal submit a blob tx for the first time
     client.send_tx_blob(tx.clone()).await.unwrap();
@@ -238,7 +238,7 @@ async fn test_tx_settlement_duplicates() -> Result<()> {
     client.send_tx_blob(tx.clone()).await.unwrap();
     hyli_node.wait_for_n_blocks(1).await?;
 
-    info!("➡️  Sending blobs for c1 & c2.hyle - second time");
+    info!("➡️  Sending blobs for c1 & c2.hyli - second time");
 
     // Next block, the same tx should be discarded because its hash is already in the map
     client.send_tx_blob(tx.clone()).await.unwrap();
@@ -257,7 +257,7 @@ async fn test_tx_settlement_duplicates() -> Result<()> {
         ),
     };
     let proof_c2 = ProofTransaction {
-        contract_name: "c2.hyle".into(),
+        contract_name: "c2.hyli".into(),
         proof: ProofData(
             borsh::to_vec(&vec![make_hyli_output_with_state(
                 tx.clone(),
@@ -269,12 +269,12 @@ async fn test_tx_settlement_duplicates() -> Result<()> {
         ),
     };
 
-    info!("➡️  Sending proof for c1 & c2.hyle - first time");
+    info!("➡️  Sending proof for c1 & c2.hyli - first time");
     // Normal - both should settle the blob txs
     client.send_tx_proof(proof_c1.clone()).await.unwrap();
     client.send_tx_proof(proof_c2.clone()).await.unwrap();
 
-    info!("➡️  Sending proof for c1 & c2.hyle - second time");
+    info!("➡️  Sending proof for c1 & c2.hyli - second time");
 
     // Should fail, txs are already settled, no more to settle
     client.send_tx_proof(proof_c1).await.unwrap();
@@ -285,7 +285,7 @@ async fn test_tx_settlement_duplicates() -> Result<()> {
 
     let contract = client.get_contract("c1".into()).await?;
     assert_eq!(contract.state_commitment.0, vec![4, 5, 6]);
-    let contract = client.get_contract("c2.hyle".into()).await?;
+    let contract = client.get_contract("c2.hyli".into()).await?;
     assert_eq!(contract.state_commitment.0, vec![8, 8, 8]);
 
     // Recompute proofs to transition to next state
@@ -303,7 +303,7 @@ async fn test_tx_settlement_duplicates() -> Result<()> {
         ),
     };
     let proof_c2 = ProofTransaction {
-        contract_name: "c2.hyle".into(),
+        contract_name: "c2.hyli".into(),
         proof: ProofData(
             borsh::to_vec(&vec![make_hyli_output_with_state(
                 tx.clone(),
@@ -315,13 +315,13 @@ async fn test_tx_settlement_duplicates() -> Result<()> {
         ),
     };
 
-    info!("➡️  Sending proof for c1 & c2.hyle  v2 - first time");
+    info!("➡️  Sending proof for c1 & c2.hyli  v2 - first time");
 
     // Should fail, the extra blob tx should have been discarded, and not in an unsettled state
     client.send_tx_proof(proof_c1.clone()).await.unwrap();
     client.send_tx_proof(proof_c2.clone()).await.unwrap();
 
-    info!("➡️  Sending blobs for c1 & c2.hyle - 3rd time");
+    info!("➡️  Sending blobs for c1 & c2.hyli - 3rd time");
 
     // Re submit the same blob tx after it was settled - should be accepted
 
@@ -331,10 +331,10 @@ async fn test_tx_settlement_duplicates() -> Result<()> {
 
     let contract = client.get_contract("c1".into()).await?;
     assert_eq!(contract.state_commitment.0, vec![4, 5, 6]);
-    let contract = client.get_contract("c2.hyle".into()).await?;
+    let contract = client.get_contract("c2.hyli".into()).await?;
     assert_eq!(contract.state_commitment.0, vec![8, 8, 8]);
 
-    info!("➡️  Sending proof for c1 & c2.hyle  v2 - second time");
+    info!("➡️  Sending proof for c1 & c2.hyli  v2 - second time");
 
     // Same blob is now in an unsettled state, proofs are up to date with the contract states
     client.send_tx_proof(proof_c1).await.unwrap();
@@ -350,7 +350,7 @@ async fn test_tx_settlement_duplicates() -> Result<()> {
     let contract = client.get_contract("c1".into()).await?;
     assert_eq!(contract.state_commitment.0, vec![7, 8, 9]);
 
-    let contract = client.get_contract("c2.hyle".into()).await?;
+    let contract = client.get_contract("c2.hyli".into()).await?;
     assert_eq!(contract.state_commitment.0, vec![9, 9, 9]);
 
     // tokio::time::sleep(Duration::from_secs(3)).await;
@@ -360,7 +360,7 @@ async fn test_tx_settlement_duplicates() -> Result<()> {
     // assert_eq!(contract.state_commitment, vec![7, 8, 9]);
 
     // let pg_client = IndexerApiHttpClient::new(format!("http://{rest_client}/")).unwrap();
-    // let contract = pg_client.get_indexer_contract(&"c2.hyle".into()).await?;
+    // let contract = pg_client.get_indexer_contract(&"c2.hyli".into()).await?;
     // assert_eq!(contract.state_commitment, vec![9, 9, 9]);
 
     Ok(())
@@ -377,28 +377,28 @@ async fn test_contract_upgrade() -> Result<()> {
     let client = NodeApiHttpClient::new(format!("http://localhost:{rest_server_port}/")).unwrap();
     hyli_node.wait_for_rest_api(&client).await?;
 
-    info!("➡️  Registering contracts c1.hyle");
+    info!("➡️  Registering contracts c1.hyli");
 
-    let b1 = make_register_blob_action("c1.hyle".into(), StateCommitment(vec![1, 2, 3]));
+    let b1 = make_register_blob_action("c1.hyli".into(), StateCommitment(vec![1, 2, 3]));
     let b1_hashed = b1.hashed();
     client.send_tx_blob(b1).await.unwrap();
 
     hyli_node.wait_for_settled_tx(b1_hashed).await?;
 
-    let contract = client.get_contract("c1.hyle".into()).await?;
+    let contract = client.get_contract("c1.hyli".into()).await?;
     assert_eq!(contract.program_id, ProgramId(vec![1, 2, 3]));
 
     // Send contract update transaction
     let b2 = BlobTransaction::new(
-        "toto@c1.hyle",
+        "toto@c1.hyli",
         vec![RegisterContractAction {
             verifier: "test".into(),
             program_id: ProgramId(vec![7, 7, 7]),
             state_commitment: StateCommitment(vec![3, 3, 3]),
-            contract_name: "c1.hyle".into(),
+            contract_name: "c1.hyli".into(),
             ..Default::default()
         }
-        .as_blob("c1.hyle".into(), None, None)],
+        .as_blob("c1.hyli".into(), None, None)],
     );
     client.send_tx_blob(b2.clone()).await.unwrap();
 
@@ -412,12 +412,12 @@ async fn test_contract_upgrade() -> Result<()> {
             program_id: ProgramId(vec![7, 7, 7]),
             // The state commitment is ignored during the update phase.
             state_commitment: StateCommitment(vec![3, 3, 3]),
-            contract_name: "c1.hyle".into(),
+            contract_name: "c1.hyli".into(),
             ..Default::default()
         }));
 
     let proof_update = ProofTransaction {
-        contract_name: "c1.hyle".into(),
+        contract_name: "c1.hyli".into(),
         proof: ProofData(borsh::to_vec(&vec![hyli_output]).unwrap()),
     };
 
@@ -430,7 +430,7 @@ async fn test_contract_upgrade() -> Result<()> {
 
     info!("➡️  Getting contracts");
 
-    let contract = client.get_contract("c1.hyle".into()).await?;
+    let contract = client.get_contract("c1.hyli".into()).await?;
     // Check program ID has changed.
     assert_eq!(contract.program_id, ProgramId(vec![7, 7, 7]));
     // We use the next_state, not the state_commitment of the update effect.

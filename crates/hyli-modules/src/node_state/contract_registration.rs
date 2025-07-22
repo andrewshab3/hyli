@@ -10,9 +10,9 @@ pub fn validate_contract_name_registration(
     owner: &ContractName,
     new_contract_name: &ContractName,
 ) -> Result<()> {
-    // Special case: 'hyle' TLD is allowed to register new TLD contracts (and can't be updated).
-    if owner.0 == "hyle" {
-        if new_contract_name.0 == "hyle"
+    // Special case: 'hyli' TLD is allowed to register new TLD contracts (and can't be updated).
+    if owner.0 == "hyli" {
+        if new_contract_name.0 == "hyli"
             || !new_contract_name.0.is_empty() && !new_contract_name.0.contains(".")
         {
             return Ok(());
@@ -108,16 +108,16 @@ mod test {
 
     #[test]
     fn test_validate_contract_registration_hyli_tld() {
-        assert!(validate_contract_name_registration(&"hyle".into(), &"newtld".into()).is_ok());
-        assert!(validate_contract_name_registration(&"hyle".into(), &"".into()).is_err());
-        assert!(validate_contract_name_registration(&"hyle".into(), &".".into()).is_err());
-        assert!(validate_contract_name_registration(&"hyle".into(), &"hyle".into()).is_ok());
+        assert!(validate_contract_name_registration(&"hyli".into(), &"newtld".into()).is_ok());
+        assert!(validate_contract_name_registration(&"hyli".into(), &"".into()).is_err());
+        assert!(validate_contract_name_registration(&"hyli".into(), &".".into()).is_err());
+        assert!(validate_contract_name_registration(&"hyli".into(), &"hyli".into()).is_ok());
     }
 
     #[test]
     fn test_validate_contract_registration_hyli_with_subdomains() {
-        let owner = "hyle".into();
-        let new_contract = "sub.sub.hyle".into();
+        let owner = "hyli".into();
+        let new_contract = "sub.sub.hyli".into();
         assert!(validate_contract_name_registration(&owner, &new_contract).is_err());
     }
 
@@ -163,9 +163,9 @@ mod test {
 
     #[test]
     fn test_validate_contract_registration_smiley() {
-        assert!(validate_contract_name_registration(&"hyle".into(), &"🥷".into()).is_ok());
+        assert!(validate_contract_name_registration(&"hyli".into(), &"🥷".into()).is_ok());
         assert!(
-            validate_contract_name_registration(&"hyle".into(), &"💅🏻💅🏼💅🏽💅🏾💅🏿💅".into()).is_ok()
+            validate_contract_name_registration(&"hyli".into(), &"💅🏻💅🏼💅🏽💅🏾💅🏿💅".into()).is_ok()
         );
     }
 

@@ -76,7 +76,7 @@ async fn main() -> Result<()> {
 
     log_error!(
         hyli::entrypoint::main_process(config, Some(crypto)).await,
-        "Error running hyle"
+        "Error running hyli"
     )?;
 
     Ok(())

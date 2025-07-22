@@ -77,7 +77,7 @@ impl E2ECtx {
 
         for node_conf in confs.iter_mut() {
             node_conf.genesis.stakers = genesis_stakers.clone();
-            let node = test_helpers::TestProcess::new("hyle", node_conf.clone()).start();
+            let node = test_helpers::TestProcess::new("hyli", node_conf.clone()).start();
 
             // Request something on node1 to be sure it's alive and working
             let client = NodeApiHttpClient::new(format!(
@@ -101,7 +101,7 @@ impl E2ECtx {
             vec![("single-node".to_string(), 100)].into_iter().collect();
 
         let node_conf = conf_maker.build("single-node").await;
-        let node = test_helpers::TestProcess::new("hyle", node_conf).start();
+        let node = test_helpers::TestProcess::new("hyli", node_conf).start();
 
         // Request something on node1 to be sure it's alive and working
         let client =
@@ -139,7 +139,7 @@ impl E2ECtx {
         );
 
         let node_conf = conf_maker.build("single-node").await;
-        let node = test_helpers::TestProcess::new("hyle", node_conf.clone()).start();
+        let node = test_helpers::TestProcess::new("hyli", node_conf.clone()).start();
 
         // Request something on node1 to be sure it's alive and working
         let client =
@@ -235,7 +235,7 @@ impl E2ECtx {
     }
 
     pub async fn add_node_with_conf(&mut self, node_conf: Conf) -> Result<&NodeApiHttpClient> {
-        let node = test_helpers::TestProcess::new("hyle", node_conf).start();
+        let node = test_helpers::TestProcess::new("hyli", node_conf).start();
         // Request something on node1 to be sure it's alive and working
         let client =
             NodeApiHttpClient::new(format!("http://localhost:{}/", &node.conf.rest_server_port))
@@ -333,7 +333,7 @@ impl E2ECtx {
     pub fn get_instructions_for(&mut self, index: usize) {
         // Print instructions to start the node manually outside the test context.
         tracing::warn!(
-            "🚀 Start node with the following command:\nhyle=$(pwd)/target/release/hyle && (cd {} && RUST_LOG=info \"$hyle\")",
+            "🚀 Start node with the following command:\nhyli=$(pwd)/target/release/hyli && (cd {} && RUST_LOG=info \"$hyli\")",
             self.nodes[index].dir.path().display()
         );
     }
@@ -383,7 +383,7 @@ impl E2ECtx {
             contract_name: name.into(),
             ..Default::default()
         }
-        .as_blob("hyle".into(), None, None)];
+        .as_blob("hyli".into(), None, None)];
 
         let tx = BlobTransaction::new(sender.clone(), blobs.clone());
         assert_ok!(self.client().send_tx_blob(tx).await);

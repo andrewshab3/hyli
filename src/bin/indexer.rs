@@ -47,7 +47,7 @@ async fn main() -> Result<()> {
 
     log_error!(
         hyli::entrypoint::main_process(config, None).await,
-        "Error running hyle indexer"
+        "Error running hyli indexer"
     )?;
 
     Ok(())

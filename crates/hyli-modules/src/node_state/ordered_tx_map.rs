@@ -78,7 +78,7 @@ impl OrderedTxMap {
         for blob in tx.blobs.values() {
             contract_names.insert(blob.blob.contract_name.clone());
             // Temp hack for speed.
-            if blob.blob.contract_name.0 != "hyle" {
+            if blob.blob.contract_name.0 != "hyli" {
                 continue;
             }
             // This is a bit horrible, we should try to be leaner.
@@ -307,10 +307,10 @@ mod tests {
     #[test]
     fn test_remove_extra_contract() {
         let mut map = OrderedTxMap::default();
-        let contract1 = ContractName::new("hyle");
+        let contract1 = ContractName::new("hyli");
         let contract2 = ContractName::new("c2");
 
-        let mut tx = new_tx("tx1", "hyle");
+        let mut tx = new_tx("tx1", "hyli");
         tx.blobs.insert(
             BlobIndex(1),
             UnsettledBlobMetadata {

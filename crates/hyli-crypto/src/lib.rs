@@ -108,7 +108,7 @@ impl BlstCrypto {
 
         println!("Loading secret key from keyring...");
         let user = whoami::username();
-        let entry = keyring::Entry::new_with_target("hyle", validator_name, &user)?;
+        let entry = keyring::Entry::new_with_target("hyli", validator_name, &user)?;
 
         let sk = match entry.get_password() {
             Ok(secret) => SecretKey::key_gen(&hex::decode(secret)?, &[])

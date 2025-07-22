@@ -470,7 +470,7 @@ impl super::Mempool {
         std::iter::zip(&tx_hashes, std::iter::zip(&hyli_outputs, &program_ids)).for_each(
             |(blob_tx_hash, (hyli_output, program_id))| {
                 debug!(
-                    "Blob tx hash {} verified with hyle output {:?} and program id {}",
+                    "Blob tx hash {} verified with hyli output {:?} and program id {}",
                     blob_tx_hash,
                     hyli_output,
                     hex::encode(&program_id.0)

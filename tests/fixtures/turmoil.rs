@@ -79,7 +79,7 @@ impl TurmoilCtx {
 
         let temp_dir = tempfile::Builder::new()
             .prefix(seed.to_string().as_str())
-            .prefix("hyle-turmoil")
+            .prefix("hyli-turmoil")
             .tempdir()
             .unwrap();
 

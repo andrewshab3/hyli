@@ -65,14 +65,14 @@ async fn custom_setup() -> Result<()> {
         for node_conf in confs.iter_mut() {
             node_conf.p2p.peers = peers.clone();
             node_conf.genesis.stakers = genesis_stakers.clone();
-            let node = test_helpers::TestProcess::new("hyle", node_conf.clone());
+            let node = test_helpers::TestProcess::new("hyli", node_conf.clone());
             nodes.push(node);
         }
         nodes
     };
 
     tracing::warn!(
-        "🚀 Start the first node with the following command:\nhyle=$(pwd)/target/release/hyle && (cd {} && RUST_LOG=info \"$hyle\")",
+        "🚀 Start the first node with the following command:\nhyli=$(pwd)/target/release/hyli && (cd {} && RUST_LOG=info \"$hyli\")",
         nodes[0].dir.path().display()
     );
 

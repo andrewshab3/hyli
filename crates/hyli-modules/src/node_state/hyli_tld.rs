@@ -50,7 +50,7 @@ fn handle_register_blob(
 ) -> Result<()> {
     // Check name, it's either a direct subdomain or a TLD
     validate_contract_registration_metadata(
-        &"hyle".into(),
+        &"hyli".into(),
         &reg.contract_name,
         &reg.verifier,
         &reg.program_id,
@@ -58,7 +58,7 @@ fn handle_register_blob(
     )?;
 
     // Check it's not already registered
-    if reg.contract_name.0 != "hyle" && contracts.contains_key(&reg.contract_name)
+    if reg.contract_name.0 != "hyli" && contracts.contains_key(&reg.contract_name)
         || contract_changes.contains_key(&reg.contract_name)
     {
         bail!("Contract {} is already registered", reg.contract_name.0);
@@ -87,7 +87,7 @@ fn handle_delete_blob(
     delete: &DeleteContractAction,
 ) -> Result<()> {
     // For now, Hyli is allowed to delete all contracts but itself
-    if delete.contract_name.0 == "hyle" {
+    if delete.contract_name.0 == "hyli" {
         bail!("Cannot delete Hyli contract");
     }
 
@@ -115,7 +115,7 @@ fn handle_update_program_id_blob(
     update: &UpdateContractProgramIdAction,
 ) -> Result<()> {
     // For now, Hyli is allowed to delete all contracts but itself
-    if update.contract_name.0 == "hyle" {
+    if update.contract_name.0 == "hyli" {
         bail!("Cannot udpate Hyli contract");
     }
 
@@ -154,7 +154,7 @@ fn handle_update_timeout_window_blob(
     update: &UpdateContractTimeoutWindowAction,
 ) -> Result<()> {
     // For now, Hyli is allowed to delete all contracts but itself
-    if update.contract_name.0 == "hyle" {
+    if update.contract_name.0 == "hyli" {
         bail!("Cannot udpate Hyli contract");
     }
 
@@ -187,7 +187,7 @@ fn handle_update_timeout_window_blob(
     Ok(())
 }
 
-/// Validates hyle contract blobs by ensuring actions are authorized and properly signed
+/// Validates hyli contract blobs by ensuring actions are authorized and properly signed
 ///
 /// This function ensures that:
 /// 1. Only authorized identities (HYLI_TLD_ID) can perform DeleteContractAction actions
@@ -198,7 +198,7 @@ fn handle_update_timeout_window_blob(
 pub fn validate_hyli_contract_blobs(tx: &BlobTransaction) -> Result<(), String> {
     // Collect NukeTxAction blobs and secp256k1 blobs
     for (index, blob) in tx.blobs.iter().enumerate() {
-        if blob.contract_name.0 == "hyle" {
+        if blob.contract_name.0 == "hyli" {
             // Check identity authorization for privileged actions
             if StructuredBlobData::<UpdateContractProgramIdAction>::try_from(blob.data.clone())
                 .is_ok()
@@ -210,7 +210,7 @@ pub fn validate_hyli_contract_blobs(tx: &BlobTransaction) -> Result<(), String> 
             {
                 if tx.identity.0 != HYLI_TLD_ID {
                     return Err(format!(
-                        "Unauthorized action for 'hyle' TLD from identity: {}",
+                        "Unauthorized action for 'hyli' TLD from identity: {}",
                         tx.identity.0
                     ));
                 }
@@ -254,7 +254,7 @@ pub fn validate_hyli_contract_blobs(tx: &BlobTransaction) -> Result<(), String> 
                 // Do nothing
             } else {
                 return Err(format!(
-                    "Unsupported permissioned action on hyle contract: {blob:?}"
+                    "Unsupported permissioned action on hyli contract: {blob:?}"
                 ));
             }
         }
