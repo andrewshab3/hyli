@@ -13,7 +13,7 @@ use hydentity::{
 };
 use hyli::mempool::verifiers::verify_proof;
 use hyli_contract_sdk::{
-    Blob, BlobTransaction, Calldata, ContractName, Hashed, HyleOutput, ProgramId, StateCommitment,
+    Blob, BlobTransaction, Calldata, ContractName, Hashed, HyliOutput, ProgramId, StateCommitment,
     Verifier, ZkContract,
 };
 use hyli_contracts::{HYDENTITY_ELF, UUID_TLD_ELF, UUID_TLD_ID};

@@ -43,14 +43,14 @@ pub fn init_with_caller<Action>(
 ) -> Result<(ZkProgramInput, StructuredBlob<Action>, Identity), String>
 ```
 
-At the end of your contract, you need to output a `HyleOutput`, you can use the helper in `utils.rs`:
+At the end of your contract, you need to output a `HyliOutput`, you can use the helper in `utils.rs`:
 
 ```rust
 pub fn as_hyli_output(
     input: ZkProgramInput,
     new_state: State,
     res: crate::RunResult,
-) -> HyleOutput
+) -> HyliOutput
 ```
 
 ## Helpers

@@ -1,15 +1,15 @@
 use anyhow::{Context, Result};
-use hyli_contract_sdk::{HyleOutput, ProgramId, Verifier};
+use hyli_contract_sdk::{HyliOutput, ProgramId, Verifier};
 use hyli_model::ProofData;
 
 pub fn verify_proof(
     proof: &ProofData,
     verifier: &Verifier,
     #[allow(unused_variables)] program_id: &ProgramId,
-) -> Result<Vec<HyleOutput>> {
+) -> Result<Vec<HyliOutput>> {
     let hyli_outputs = match verifier.0.as_str() {
         // TODO: add #[cfg(test)]
-        "test" => borsh::from_slice::<Vec<HyleOutput>>(&proof.0).context("parsing test proof"),
+        "test" => borsh::from_slice::<Vec<HyliOutput>>(&proof.0).context("parsing test proof"),
         #[cfg(test)]
         "test-slow" => {
             tracing::info!("Sleeping for 2 seconds to simulate a slow verifier");
@@ -35,8 +35,8 @@ pub fn verify_recursive_proof(
     proof: &ProofData,
     verifier: &Verifier,
     program_id: &ProgramId,
-) -> Result<(Vec<ProgramId>, Vec<HyleOutput>)> {
-    let outputs: (Vec<ProgramId>, Vec<HyleOutput>) = match verifier.0.as_str() {
+) -> Result<(Vec<ProgramId>, Vec<HyliOutput>)> {
+    let outputs: (Vec<ProgramId>, Vec<HyliOutput>) = match verifier.0.as_str() {
         #[cfg(feature = "risc0")]
         hyli_model::verifiers::RISC0_1 => {
             hyli_verifiers::risc0_1::verify_recursive(proof, program_id)

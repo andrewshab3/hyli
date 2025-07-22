@@ -190,7 +190,7 @@ mod test {
     use axum_test::TestServer;
     use client_sdk::transaction_builder::ProvableBlobTx;
     use hydentity::{client::tx_executor_handler::register_identity, HydentityAction};
-    use hyli_contract_sdk::{BlobIndex, HyleOutput, Identity, ProgramId, StateCommitment, TxHash};
+    use hyli_contract_sdk::{BlobIndex, HyliOutput, Identity, ProgramId, StateCommitment, TxHash};
     use hyli_model::api::{
         APIBlob, APIBlock, APIContract, APITransaction, APITransactionEvents, TransactionStatusDb,
     };
@@ -319,7 +319,7 @@ mod test {
                     original_proof_hash: proof.hashed(),
                     program_id: ProgramId(vec![3, 2, 1]),
                     blob_tx_hash: blob_transaction.hashed(),
-                    hyli_output: HyleOutput {
+                    hyli_output: HyliOutput {
                         version: 1,
                         initial_state,
                         next_state,

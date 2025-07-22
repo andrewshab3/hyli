@@ -76,7 +76,7 @@ pub type RunResult = Result<(Vec<u8>, ExecutionContext, Vec<OnchainEffect>), Str
 /**
 This trait is used to define the contract's entrypoint.
 By using it and the [execute](function@crate::guest::execute) function, you let the sdk
-generate for you the [HyleOutput] struct with correct fields.
+generate for you the [HyliOutput] struct with correct fields.
 
 The [Calldata] struct is built by the application backend and given as input to
 the program that runs in the zkvm.

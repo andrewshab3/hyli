@@ -23,7 +23,7 @@ use hyli::{
     utils::conf::{Conf, P2pMode, TimestampCheck},
 };
 use hyli_contract_sdk::{
-    BlobIndex, ContractName, HyleOutput, Identity, ProgramId, StateCommitment, TxHash, Verifier,
+    BlobIndex, ContractName, HyliOutput, Identity, ProgramId, StateCommitment, TxHash, Verifier,
 };
 use hyli_net::net::bind_tcp_listener;
 

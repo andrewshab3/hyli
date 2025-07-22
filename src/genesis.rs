@@ -480,7 +480,7 @@ impl Genesis {
             let tx_hash = ptx.to_blob_tx().hashed();
             ptx.outputs.push((
                 token.into(),
-                HyleOutput {
+                HyliOutput {
                     version: 1,
                     initial_state: initial_state.clone(),
                     next_state: next_state.clone(),

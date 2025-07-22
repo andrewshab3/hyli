@@ -1658,11 +1658,11 @@ async fn test_nuke_transaction_forces_target_to_fail() {
     );
 
     // Create a nuke transaction targeting tx2
-    let hyli_output_tx2 = hyli_model::HyleOutput {
+    let hyli_output_tx2 = hyli_model::HyliOutput {
         success: false,
         ..Default::default()
     };
-    let hyli_output_tx3 = hyli_model::HyleOutput {
+    let hyli_output_tx3 = hyli_model::HyliOutput {
         success: true,
         initial_state: StateCommitment(vec![4, 5, 6]),
         next_state: StateCommitment(vec![10, 11, 12]),

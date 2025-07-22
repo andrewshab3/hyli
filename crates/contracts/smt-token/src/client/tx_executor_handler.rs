@@ -5,7 +5,7 @@ use client_sdk::transaction_builder::{ProvableBlobTx, TxExecutorHandler};
 use sdk::{
     merkle_utils::BorshableMerkleProof,
     utils::{as_hyli_output, parse_calldata},
-    Calldata, ContractName, HyleOutput, Identity, RegisterContractEffect, StateCommitment,
+    Calldata, ContractName, HyliOutput, Identity, RegisterContractEffect, StateCommitment,
     StructuredBlob,
 };
 
@@ -48,7 +48,7 @@ impl Clone for SmtTokenProvableState {
 }
 
 impl TxExecutorHandler for SmtTokenProvableState {
-    fn handle(&mut self, calldata: &Calldata) -> Result<HyleOutput> {
+    fn handle(&mut self, calldata: &Calldata) -> Result<HyliOutput> {
         let root = *self.0.root();
         let initial_state_commitment = StateCommitment(Into::<[u8; 32]>::into(root).to_vec());
         let (action, execution_ctx) =

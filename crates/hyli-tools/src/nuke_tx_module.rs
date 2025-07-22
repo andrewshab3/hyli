@@ -1,7 +1,7 @@
 use anyhow::{Context, Result};
 use client_sdk::rest_client::{NodeApiClient, NodeApiHttpClient};
 use hyli_model::{
-    BlobTransaction, ContractAction, HyleOutput, Identity, NodeStateEvent, TxHash,
+    BlobTransaction, ContractAction, HyliOutput, Identity, NodeStateEvent, TxHash,
     verifiers::Secp256k1Blob,
 };
 use hyli_modules::{
@@ -20,12 +20,12 @@ module_bus_client! {
 }
 pub struct NukeTxModuleCtx {
     pub config: Conf,
-    pub txs: BTreeMap<TxHash, Vec<HyleOutput>>,
+    pub txs: BTreeMap<TxHash, Vec<HyliOutput>>,
 }
 
 pub struct NukeTxModule {
     _bus: NukeTxBusClient,
-    remaining_txs: BTreeMap<TxHash, Vec<HyleOutput>>,
+    remaining_txs: BTreeMap<TxHash, Vec<HyliOutput>>,
     node_client: NodeApiHttpClient,
     secret_key: SecretKey,
 }

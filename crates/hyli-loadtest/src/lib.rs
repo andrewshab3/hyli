@@ -12,7 +12,7 @@ use client_sdk::{contract_states, transaction_builder};
 use hydentity::client::tx_executor_handler::{register_identity, verify_identity};
 use hydentity::Hydentity;
 use hyli_contract_sdk::{
-    Blob, BlobData, BlobTransaction, Calldata, ContractAction, ContractName, Hashed, HyleOutput,
+    Blob, BlobData, BlobTransaction, Calldata, ContractAction, ContractName, Hashed, HyliOutput,
     Identity, RegisterContractAction, StateCommitment, TimeoutWindow, Transaction, TxHash,
     ZkContract,
 };
@@ -87,7 +87,7 @@ impl transaction_builder::StateUpdater for CanonicalStates {
         &mut self,
         contract_name: &ContractName,
         calldata: &Calldata,
-    ) -> anyhow::Result<HyleOutput> {
+    ) -> anyhow::Result<HyliOutput> {
         if contract_name == &self.hydentity_name {
             self.hydentity
                 .handle(calldata)

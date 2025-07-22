@@ -4,7 +4,7 @@ use client_sdk::{
 };
 use hydentity::{client::tx_executor_handler::register_identity, Hydentity};
 use hyli_risc0_recursion::ProofInput;
-use sdk::{Blob, Calldata, ContractName, HyleOutput};
+use sdk::{Blob, Calldata, ContractName, HyliOutput};
 
 contract_states!(
     struct States {
@@ -80,7 +80,7 @@ async fn test_recursion() {
         .map(|x| {
             (
                 x.0,
-                risc0_zkvm::serde::from_slice::<Vec<HyleOutput>, _>(&x.1).unwrap(),
+                risc0_zkvm::serde::from_slice::<Vec<HyliOutput>, _>(&x.1).unwrap(),
             )
         })
         .collect::<Vec<_>>();

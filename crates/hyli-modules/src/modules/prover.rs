@@ -350,7 +350,7 @@ where
                                 cn =% self.ctx.contract_name,
                                 tx_hash =% tx.hashed(),
                                 tx_height =% tx_ctx.block_height,
-                                "This is likely a bug in the prover, please report it to the Hyle team."
+                                "This is likely a bug in the prover, please report it to the Hyli team."
                             );
                         }
                         Ok(hyli_output) => {
@@ -373,7 +373,7 @@ where
                                     cn =% self.ctx.contract_name,
                                     tx_hash =% tx.hashed(),
                                     tx_height =% tx_ctx.block_height,
-                                    "This is likely a bug in the prover, please report it to the Hyle team."
+                                    "This is likely a bug in the prover, please report it to the Hyli team."
                                 );
                             }
                         }
@@ -406,7 +406,7 @@ where
                         );
                         error!(
                             cn =% self.ctx.contract_name,
-                            "This is likely a bug in the prover, please report it to the Hyle team."
+                            "This is likely a bug in the prover, please report it to the Hyli team."
                         );
                         anyhow::bail!(
                           "Onchain state does not match final state after catching up. Onchain: {:?}, Final: {:?}",
@@ -644,7 +644,7 @@ where
                     error!(
                         cn =% self.ctx.contract_name,
                         block_height =% block.block_height,
-                        "This is likely a bug in the prover, please report it to the Hyle team."
+                        "This is likely a bug in the prover, please report it to the Hyli team."
                     );
                     bail!(
                         "Contract state in store does not match the one onchain. Onchain: {:?}, Store: {:?}",
@@ -898,7 +898,7 @@ where
                     "No state history for previous tx {:?}, returning None",
                     prev_tx
                 );
-                error!("This is likely a bug in the prover, please report it to the Hyle team.");
+                error!("This is likely a bug in the prover, please report it to the Hyli team.");
                 error!(cn =% self.ctx.contract_name, tx_hash =% tx, "State history: {:?}", self.store.state_history.keys());
                 error!(
                     cn =% self.ctx.contract_name,

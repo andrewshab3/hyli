@@ -2,7 +2,7 @@ use anyhow::{Context, Result};
 use clap::{Parser, command};
 use std::collections::BTreeMap;
 
-use hyli_model::{HyleOutput, TxHash};
+use hyli_model::{HyliOutput, TxHash};
 use hyli_modules::utils::logger::setup_tracing;
 
 use hyli_tools::nuke_tx_module::{Conf, NukeTxModule, NukeTxModuleCtx};
@@ -31,7 +31,7 @@ async fn main() -> Result<()> {
     for tx_hash in args.tx_hashes {
         txs.insert(
             TxHash(tx_hash),
-            vec![HyleOutput {
+            vec![HyliOutput {
                 success: false,
                 ..Default::default()
             }],

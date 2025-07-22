@@ -25,7 +25,7 @@ impl TxExecutorHandler for Staking {
     fn build_commitment_metadata(&self, _blob: &Blob) -> Result<Vec<u8>> {
         borsh::to_vec(self).map_err(Into::into)
     }
-    fn handle(&mut self, calldata: &Calldata) -> Result<sdk::HyleOutput> {
+    fn handle(&mut self, calldata: &Calldata) -> Result<sdk::HyliOutput> {
         let initial_state_commitment = <Self as ZkContract>::commit(self);
         let mut res = <Self as ZkContract>::execute(self, calldata);
         let next_state_commitment = <Self as ZkContract>::commit(self);

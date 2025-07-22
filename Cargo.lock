@@ -5207,7 +5207,7 @@ dependencies = [
 
 [[package]]
 name = "hyli_tools"
-version = "0.1.0"
+version = "0.13.0-rc.4"
 dependencies = [
  "anyhow",
  "axum 0.8.4",

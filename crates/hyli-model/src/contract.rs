@@ -568,8 +568,8 @@ pub enum OnchainEffect {
     Default, Serialize, Deserialize, Debug, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize,
 )]
 #[cfg_attr(feature = "full", derive(utoipa::ToSchema))]
-pub struct HyleOutput {
-    /// The version of the HyleOutput. This is unchecked for now.
+pub struct HyliOutput {
+    /// The version of the HyliOutput. This is unchecked for now.
     pub version: u32,
     /// The initial state of the contract. This is the state before the transaction is executed.
     pub initial_state: StateCommitment,
@@ -948,7 +948,7 @@ impl ContractAction for DeleteContractAction {
 }
 
 /// Used by the Hyli node to recognize contract registration.
-/// Simply output this struct in your HyleOutput registered_contracts.
+/// Simply output this struct in your HyliOutput registered_contracts.
 /// See uuid-tld for examples.
 #[derive(
     Debug, Serialize, Deserialize, Default, Clone, PartialEq, Eq, BorshSerialize, BorshDeserialize,

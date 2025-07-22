@@ -15,15 +15,15 @@ pub use turmoil::net::*;
 #[cfg(feature = "turmoil")]
 pub use turmoil::*;
 
-pub async fn bind_tcp_listener(port: u16) -> anyhow::Result<HyleNetTcpListener> {
-    Ok(HyleNetTcpListener(
+pub async fn bind_tcp_listener(port: u16) -> anyhow::Result<HyliNetTcpListener> {
+    Ok(HyliNetTcpListener(
         TcpListener::bind((Ipv4Addr::UNSPECIFIED, port)).await?,
     ))
 }
 /// Turmoil Listener does not implement axum::Listener. Wrap it with this helper to spawn an Axum server with it.
-pub struct HyleNetTcpListener(pub TcpListener);
+pub struct HyliNetTcpListener(pub TcpListener);
 
-impl Listener for HyleNetTcpListener {
+impl Listener for HyliNetTcpListener {
     type Io = TcpStream;
 
     type Addr = std::net::SocketAddr;
@@ -37,13 +37,13 @@ impl Listener for HyleNetTcpListener {
     }
 }
 
-impl From<TcpListener> for HyleNetTcpListener {
+impl From<TcpListener> for HyliNetTcpListener {
     fn from(value: TcpListener) -> Self {
-        HyleNetTcpListener(value)
+        HyliNetTcpListener(value)
     }
 }
 
-impl Deref for HyleNetTcpListener {
+impl Deref for HyliNetTcpListener {
     type Target = TcpListener;
 
     fn deref(&self) -> &Self::Target {
@@ -51,13 +51,13 @@ impl Deref for HyleNetTcpListener {
     }
 }
 
-pub struct HyleNetIntoMakeServiceWithconnectInfo<S, C>(pub IntoMakeServiceWithConnectInfo<S, C>);
+pub struct HyliNetIntoMakeServiceWithconnectInfo<S, C>(pub IntoMakeServiceWithConnectInfo<S, C>);
 
-impl<'a, S, C> tower_service::Service<IncomingStream<'a, HyleNetTcpListener>>
-    for HyleNetIntoMakeServiceWithconnectInfo<S, C>
+impl<'a, S, C> tower_service::Service<IncomingStream<'a, HyliNetTcpListener>>
+    for HyliNetIntoMakeServiceWithconnectInfo<S, C>
 where
     S: Clone,
-    C: Connected<IncomingStream<'a, HyleNetTcpListener>>,
+    C: Connected<IncomingStream<'a, HyliNetTcpListener>>,
 {
     type Response = AddExtension<S, ConnectInfo<C>>;
 
@@ -72,21 +72,21 @@ where
         self.0.poll_ready(cx)
     }
 
-    fn call(&mut self, req: IncomingStream<'a, HyleNetTcpListener>) -> Self::Future {
+    fn call(&mut self, req: IncomingStream<'a, HyliNetTcpListener>) -> Self::Future {
         self.0.call(req)
     }
 }
 
 #[derive(Clone)]
-pub struct HyleNetSocketAddr(pub SocketAddr);
+pub struct HyliNetSocketAddr(pub SocketAddr);
 
-impl Connected<IncomingStream<'_, HyleNetTcpListener>> for HyleNetSocketAddr {
-    fn connect_info(stream: IncomingStream<'_, HyleNetTcpListener>) -> Self {
-        HyleNetSocketAddr(*stream.remote_addr())
+impl Connected<IncomingStream<'_, HyliNetTcpListener>> for HyliNetSocketAddr {
+    fn connect_info(stream: IncomingStream<'_, HyliNetTcpListener>) -> Self {
+        HyliNetSocketAddr(*stream.remote_addr())
     }
 }
 
-impl<S, C> Deref for HyleNetIntoMakeServiceWithconnectInfo<S, C> {
+impl<S, C> Deref for HyliNetIntoMakeServiceWithconnectInfo<S, C> {
     type Target = IntoMakeServiceWithConnectInfo<S, C>;
 
     fn deref(&self) -> &Self::Target {
@@ -94,7 +94,7 @@ impl<S, C> Deref for HyleNetIntoMakeServiceWithconnectInfo<S, C> {
     }
 }
 
-impl Deref for HyleNetSocketAddr {
+impl Deref for HyliNetSocketAddr {
     type Target = SocketAddr;
 
     fn deref(&self) -> &Self::Target {

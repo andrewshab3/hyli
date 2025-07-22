@@ -60,12 +60,12 @@ use alloc::vec::Vec;
 use borsh::BorshDeserialize;
 use hyli_model::Calldata;
 
-use crate::{utils::as_hyli_output, HyleOutput};
+use crate::{utils::as_hyli_output, HyliOutput};
 use crate::{RunResult, TransactionalZkContract, ZkContract};
 
 pub trait GuestEnv {
     fn log(&self, message: &str);
-    fn commit(&self, output: Vec<HyleOutput>);
+    fn commit(&self, output: Vec<HyliOutput>);
     fn read<T: BorshDeserialize + 'static>(&self) -> T;
 }
 
@@ -79,7 +79,7 @@ impl GuestEnv for Risc0Env {
         risc0_zkvm::guest::env::log(message);
     }
 
-    fn commit(&self, output: Vec<HyleOutput>) {
+    fn commit(&self, output: Vec<HyliOutput>) {
         risc0_zkvm::guest::env::commit(&output);
     }
 
@@ -102,7 +102,7 @@ impl GuestEnv for SP1Env {
         sp1_zkvm::io::hint(&message);
     }
 
-    fn commit(&self, output: Vec<HyleOutput>) {
+    fn commit(&self, output: Vec<HyliOutput>) {
         #[allow(clippy::unwrap_used, reason = "should panic here")]
         let vec = borsh::to_vec(&output).unwrap();
         sp1_zkvm::io::commit_slice(&vec);
@@ -129,12 +129,12 @@ impl GuestEnv for SP1Env {
 ///
 /// # Returns
 ///
-/// The contract output as `HyleOutput`.
+/// The contract output as `HyliOutput`.
 ///
 /// # Panics
 ///
 /// Panics if the contract initialization fails.
-pub fn execute<Z>(commitment_metadata: &[u8], calldata: &[Calldata]) -> Vec<HyleOutput>
+pub fn execute<Z>(commitment_metadata: &[u8], calldata: &[Calldata]) -> Vec<HyliOutput>
 where
     Z: ZkContract + TransactionalZkContract + BorshDeserialize + 'static,
 {

@@ -1,9 +1,9 @@
 use core::str;
 
 use hyli_hyllar::{Hyllar, HyllarAction, FAUCET_ID};
-use sdk::{BlobIndex, Calldata, ContractAction, ContractName, HyleOutput, TxHash};
+use sdk::{BlobIndex, Calldata, ContractAction, ContractName, HyliOutput, TxHash};
 
-fn execute(inputs: (Vec<u8>, Vec<Calldata>)) -> Vec<HyleOutput> {
+fn execute(inputs: (Vec<u8>, Vec<Calldata>)) -> Vec<HyliOutput> {
     let inputs = borsh::to_vec(&inputs).unwrap();
     let env = risc0_zkvm::ExecutorEnv::builder()
         .write(&inputs.len())
@@ -21,7 +21,7 @@ fn execute(inputs: (Vec<u8>, Vec<Calldata>)) -> Vec<HyleOutput> {
 
     execute_info
         .journal
-        .decode::<Vec<sdk::HyleOutput>>()
+        .decode::<Vec<sdk::HyliOutput>>()
         .unwrap()
 }
 

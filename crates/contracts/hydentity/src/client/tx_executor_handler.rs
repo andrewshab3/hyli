@@ -20,7 +20,7 @@ impl TxExecutorHandler for Hydentity {
         borsh::to_vec(self).context("Failed to serialize Hydentity")
     }
 
-    fn handle(&mut self, calldata: &Calldata) -> Result<sdk::HyleOutput> {
+    fn handle(&mut self, calldata: &Calldata) -> Result<sdk::HyliOutput> {
         let initial_state_commitment = <Self as ZkContract>::commit(self);
         let mut res = <Self as ZkContract>::execute(self, calldata);
         let next_state_commitment = <Self as ZkContract>::commit(self);

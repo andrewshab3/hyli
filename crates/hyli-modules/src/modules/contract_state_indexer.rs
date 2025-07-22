@@ -335,7 +335,7 @@ mod tests {
     }
 
     impl TxExecutorHandler for MockState {
-        fn handle(&mut self, _: &Calldata) -> Result<HyleOutput> {
+        fn handle(&mut self, _: &Calldata) -> Result<HyliOutput> {
             anyhow::bail!("not implemented");
         }
 

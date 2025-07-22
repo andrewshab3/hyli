@@ -98,7 +98,7 @@ enum BlobTxHandled {
 )]
 /// Used as a blob action to force a tx to timeout.
 pub struct NukeTxAction {
-    pub txs: BTreeMap<TxHash, Vec<HyleOutput>>,
+    pub txs: BTreeMap<TxHash, Vec<HyliOutput>>,
 }
 
 impl ContractAction for NukeTxAction {
@@ -578,7 +578,7 @@ impl NodeState {
             );
         };
 
-        // If we arrived here, HyleOutput provided is OK and can now be saved
+        // If we arrived here, HyliOutput provided is OK and can now be saved
         debug!(
             "Saving a hyli_output for BlobTx {} index {}",
             blob_proof_data.hyli_output.tx_hash.0, blob_proof_data.hyli_output.index
@@ -808,7 +808,7 @@ impl NodeState {
         // We need to check the current state of 'current_contracts' to check validity,
         // so we really can't do this before we've settled the earlier blobs.
         if contract_name.0 == "hyli" {
-            tracing::trace!("Settlement - processing for Hyle");
+            tracing::trace!("Settlement - processing for Hyli");
             return match handle_blob_for_hyli_tld(
                 contracts,
                 &mut contract_changes,
@@ -956,7 +956,7 @@ impl NodeState {
         self.metrics.add_successful_transactions(1);
         info!(tx_height =% block_under_construction.block_height, "✨ Settled tx {}", &bth);
 
-        let mut txs_to_nuke = BTreeMap::<TxHash, Vec<HyleOutput>>::new();
+        let mut txs_to_nuke = BTreeMap::<TxHash, Vec<HyliOutput>>::new();
 
         // Go through each blob and:
         // - keep track of which blob proof output we used to settle the TX for each blob.
@@ -1131,7 +1131,7 @@ impl NodeState {
             tracing::debug!("Txs to nuke: {:?}", txs_to_nuke);
 
             // For the first blob of each tx to nuke, we need to create a fake verified proof that has a hyli_output success at false
-            let mut updates: BTreeMap<TxHash, Vec<(ProgramId, HyleOutput)>> = BTreeMap::new();
+            let mut updates: BTreeMap<TxHash, Vec<(ProgramId, HyliOutput)>> = BTreeMap::new();
 
             for (tx_hash, hyli_outputs) in txs_to_nuke.iter() {
                 if let Some(unsettled_blob_tx) = self.unsettled_transactions.get(tx_hash) {
@@ -1210,7 +1210,7 @@ impl NodeState {
     // the state might be different when settling.
     fn verify_hyli_output(
         unsettled_tx: &UnsettledBlobTransaction,
-        hyli_output: &HyleOutput,
+        hyli_output: &HyliOutput,
     ) -> Result<(), Error> {
         // Identity verification
         if unsettled_tx.identity != hyli_output.identity {
@@ -1332,12 +1332,12 @@ impl NodeState {
 
     // Called when trying to actually settle a blob TX - processes a proof for settlement.
     // verify_hyli_output has already been called at this point.
-    // Not called for the Hyle TLD.
+    // Not called for the Hyli TLD.
     fn process_proof(
         contracts: &HashMap<ContractName, Contract>,
         contract_changes: &mut BTreeMap<ContractName, ModifiedContractData>,
         contract_name: &ContractName,
-        proof_metadata: &(ProgramId, HyleOutput),
+        proof_metadata: &(ProgramId, HyliOutput),
         current_blob: &UnsettledBlobMetadata,
     ) -> Result<()> {
         validate_state_commitment_size(&proof_metadata.1.next_state)?;
@@ -1630,7 +1630,7 @@ pub mod test {
 
     pub fn new_proof_tx(
         contract: &ContractName,
-        hyli_output: &HyleOutput,
+        hyli_output: &HyliOutput,
         blob_tx_hash: &TxHash,
     ) -> VerifiedProofTransaction {
         let proof = ProofTransaction {
@@ -1652,8 +1652,8 @@ pub mod test {
         }
     }
 
-    pub fn make_hyli_output(blob_tx: BlobTransaction, blob_index: BlobIndex) -> HyleOutput {
-        HyleOutput {
+    pub fn make_hyli_output(blob_tx: BlobTransaction, blob_index: BlobIndex) -> HyliOutput {
+        HyliOutput {
             version: 1,
             identity: blob_tx.identity.clone(),
             index: blob_index,
@@ -1670,8 +1670,8 @@ pub mod test {
         }
     }
 
-    pub fn make_hyli_output_bis(blob_tx: BlobTransaction, blob_index: BlobIndex) -> HyleOutput {
-        HyleOutput {
+    pub fn make_hyli_output_bis(blob_tx: BlobTransaction, blob_index: BlobIndex) -> HyliOutput {
+        HyliOutput {
             version: 1,
             identity: blob_tx.identity.clone(),
             index: blob_index,
@@ -1688,8 +1688,8 @@ pub mod test {
         }
     }
 
-    pub fn make_hyli_output_ter(blob_tx: BlobTransaction, blob_index: BlobIndex) -> HyleOutput {
-        HyleOutput {
+    pub fn make_hyli_output_ter(blob_tx: BlobTransaction, blob_index: BlobIndex) -> HyliOutput {
+        HyliOutput {
             version: 1,
             identity: blob_tx.identity.clone(),
             index: blob_index,
@@ -1710,8 +1710,8 @@ pub mod test {
         blob_index: BlobIndex,
         initial_state: &[u8],
         next_state: &[u8],
-    ) -> HyleOutput {
-        HyleOutput {
+    ) -> HyliOutput {
+        HyliOutput {
             version: 1,
             identity: blob_tx.identity.clone(),
             index: blob_index,

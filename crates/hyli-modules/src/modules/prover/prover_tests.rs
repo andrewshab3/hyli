@@ -56,7 +56,7 @@ impl TxExecutorHandler for TestContract {
         borsh::to_vec(self).map_err(Into::into)
     }
 
-    fn handle(&mut self, calldata: &Calldata) -> Result<sdk::HyleOutput> {
+    fn handle(&mut self, calldata: &Calldata) -> Result<sdk::HyliOutput> {
         let initial_state = ZkContract::commit(self);
         let mut res = self.execute(calldata);
         let next_state = ZkContract::commit(self);
@@ -145,7 +145,7 @@ async fn get_txs(api_client: &Arc<NodeApiMockClient>) -> Vec<Transaction> {
     let txs = gard.drain(..).collect::<Vec<ProofTransaction>>();
     txs.into_iter()
         .map(|t| {
-            let hyli_outputs = borsh::from_slice::<Vec<HyleOutput>>(&t.proof.0)
+            let hyli_outputs = borsh::from_slice::<Vec<HyliOutput>>(&t.proof.0)
                 .context("parsing test proof")
                 .unwrap();
             for hyli_output in &hyli_outputs {
@@ -187,7 +187,7 @@ fn count_hyli_outputs(proof: &Transaction) -> usize {
     {
         proven_blobs.len()
     } else {
-        tracing::info!("No Hyle outputs in this transaction");
+        tracing::info!("No Hyli outputs in this transaction");
         0
     }
 }

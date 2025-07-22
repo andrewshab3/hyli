@@ -1,5 +1,5 @@
 use anyhow::{Context, Error};
-use hyli_model::{Blob, BlobIndex, HyleOutput, IndexedBlobs, StateCommitment, TxHash};
+use hyli_model::{Blob, BlobIndex, HyliOutput, IndexedBlobs, StateCommitment, TxHash};
 use tracing::debug;
 
 /// Extracts the public inputs from the output of `reconstruct_honk_proof`.
@@ -31,7 +31,7 @@ pub fn deflatten_fields(flattened_fields: &[u8]) -> Vec<String> {
     result
 }
 
-pub fn parse_noir_output(output: &[u8], vkey: &[u8]) -> Result<HyleOutput, Error> {
+pub fn parse_noir_output(output: &[u8], vkey: &[u8]) -> Result<HyliOutput, Error> {
     // let mut public_outputs: Vec<String> = serde_json::from_str(&output_json)?;
     let Some(public_inputs) = extract_public_inputs(output, vkey) else {
         return Err(anyhow::anyhow!("Failed to extract public inputs"));
@@ -52,7 +52,7 @@ pub fn parse_noir_output(output: &[u8], vkey: &[u8]) -> Result<HyleOutput, Error
     let success = u32::from_str_radix(&vector.remove(0), 16)? == 1;
     debug!("Parsed success: {}", success);
 
-    Ok(HyleOutput {
+    Ok(HyliOutput {
         version,
         initial_state: StateCommitment(initial_state),
         next_state: StateCommitment(next_state),

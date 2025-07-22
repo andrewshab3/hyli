@@ -393,7 +393,7 @@ impl super::Mempool {
                                 if local_program_ids.len() != proof_tx.proven_blobs.len()
                                     || !data_matches
                                 {
-                                    warn!("Refusing DataProposal: incorrect HyleOutput in proof transaction");
+                                    warn!("Refusing DataProposal: incorrect HyliOutput in proof transaction");
                                     return DataProposalVerdict::Refuse;
                                 }
                             }
@@ -412,7 +412,7 @@ impl super::Mempool {
                                             output != hyli_output
                                         })
                                 {
-                                    warn!("Refusing DataProposal: incorrect HyleOutput in proof transaction");
+                                    warn!("Refusing DataProposal: incorrect HyliOutput in proof transaction");
                                     return DataProposalVerdict::Refuse;
                                 }
                             }

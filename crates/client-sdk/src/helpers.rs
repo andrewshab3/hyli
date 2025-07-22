@@ -3,7 +3,7 @@ use std::pin::Pin;
 use anyhow::Result;
 use borsh::BorshSerialize;
 use sdk::{
-    Calldata, ContractName, HyleOutput, ProgramId, Proof, ProofData, RegisterContractAction,
+    Calldata, ContractName, HyliOutput, ProgramId, Proof, ProofData, RegisterContractAction,
     StateCommitment, TimeoutWindow, Verifier,
 };
 
@@ -401,10 +401,10 @@ pub mod test {
         }
     }
 
-    pub fn execute(commitment_metadata: Vec<u8>, calldata: Calldata) -> Result<HyleOutput> {
+    pub fn execute(commitment_metadata: Vec<u8>, calldata: Calldata) -> Result<HyliOutput> {
         // FIXME: this is a hack to make the test pass.
         let initial_state = StateCommitment(commitment_metadata);
-        let hyli_output = HyleOutput {
+        let hyli_output = HyliOutput {
             version: 1,
             initial_state: initial_state.clone(),
             next_state: initial_state,

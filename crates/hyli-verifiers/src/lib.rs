@@ -4,7 +4,7 @@ use std::fmt::Write;
 use std::io::Read;
 
 use anyhow::{bail, Context, Error};
-use hyli_model::{HyleOutput, ProgramId, ProofData, Verifier};
+use hyli_model::{HyliOutput, ProgramId, ProofData, Verifier};
 use rand::Rng;
 
 #[cfg(feature = "sp1")]
@@ -18,7 +18,7 @@ pub fn verify(
     verifier: &Verifier,
     proof: &ProofData,
     program_id: &ProgramId,
-) -> Result<Vec<HyleOutput>, Error> {
+) -> Result<Vec<HyliOutput>, Error> {
     match verifier.0.as_str() {
         #[cfg(feature = "risc0")]
         hyli_model::verifiers::RISC0_1 => risc0_1::verify(proof, program_id),
@@ -47,19 +47,19 @@ pub mod risc0_1 {
     pub type Risc0ProgramId = [u8; 32];
     pub type Risc0Journal = Vec<u8>;
 
-    pub fn verify(proof: &ProofData, program_id: &ProgramId) -> Result<Vec<HyleOutput>, Error> {
+    pub fn verify(proof: &ProofData, program_id: &ProgramId) -> Result<Vec<HyliOutput>, Error> {
         let journal = risc0_proof_verifier(&proof.0, &program_id.0)?;
-        // First try to decode it as a single HyleOutput
+        // First try to decode it as a single HyliOutput
         Ok(
-            match std::panic::catch_unwind(|| journal.decode::<Vec<HyleOutput>>()).unwrap_or(Err(
-                risc0_zkvm::serde::Error::Custom("Failed to decode single HyleOutput".into()),
+            match std::panic::catch_unwind(|| journal.decode::<Vec<HyliOutput>>()).unwrap_or(Err(
+                risc0_zkvm::serde::Error::Custom("Failed to decode single HyliOutput".into()),
             )) {
                 Ok(ho) => ho,
                 Err(_) => {
-                    debug!("Failed to decode Vec<HyleOutput>, trying to decode as HyleOutput");
+                    debug!("Failed to decode Vec<HyliOutput>, trying to decode as HyliOutput");
                     let hyli_output = journal
-                        .decode::<HyleOutput>()
-                        .context("Failed to extract HyleOuput from Risc0's journal")?;
+                        .decode::<HyliOutput>()
+                        .context("Failed to extract HyliOuput from Risc0's journal")?;
 
                     vec![hyli_output]
                 }
@@ -70,22 +70,22 @@ pub mod risc0_1 {
     pub fn verify_recursive(
         proof: &ProofData,
         program_id: &ProgramId,
-    ) -> Result<(Vec<ProgramId>, Vec<HyleOutput>), Error> {
+    ) -> Result<(Vec<ProgramId>, Vec<HyliOutput>), Error> {
         let journal = risc0_proof_verifier(&proof.0, &program_id.0)?;
         let mut output = journal
             .decode::<Vec<(Risc0ProgramId, Risc0Journal)>>()
-            .context("Failed to extract HyleOuput from Risc0's journal")?;
+            .context("Failed to extract HyliOuput from Risc0's journal")?;
 
         // Doesn't actually work to just deserialize in one go.
         output
             .drain(..)
             .map(|o| {
-                risc0_zkvm::serde::from_slice::<Vec<HyleOutput>, _>(&o.1)
+                risc0_zkvm::serde::from_slice::<Vec<HyliOutput>, _>(&o.1)
                     .map(|h| (ProgramId(o.0.to_vec()), h))
             })
             .collect::<Result<(Vec<_>, Vec<_>), _>>()
             .map(|(ids, outputs)| (ids, outputs.into_iter().flatten().collect()))
-            .context("Failed to decode HyleOutput")
+            .context("Failed to decode HyliOutput")
     }
 
     pub fn risc0_proof_verifier(
@@ -119,7 +119,7 @@ pub mod noir {
 
     /// At present, we are using binary to facilitate the integration of the Noir verifier.
     /// This is not meant to be a permanent solution.
-    pub fn verify(proof: &ProofData, image_id: &ProgramId) -> Result<Vec<HyleOutput>, Error> {
+    pub fn verify(proof: &ProofData, image_id: &ProgramId) -> Result<Vec<HyliOutput>, Error> {
         // Define a struct with Drop implementation for cleanup
         struct TempFiles {
             proof_path: String,
@@ -212,7 +212,7 @@ pub mod sp1_4 {
     pub fn verify(
         proof_bin: &ProofData,
         verification_key: &ProgramId,
-    ) -> Result<Vec<HyleOutput>, Error> {
+    ) -> Result<Vec<HyliOutput>, Error> {
         let client = &*SP1_CLIENT;
 
         let proof: SP1ProofWithPublicValues =
@@ -228,15 +228,15 @@ pub mod sp1_4 {
             .verify(&proof, &vk)
             .context("SP1 proof verification failed")?;
 
-        tracing::trace!("Extract HyleOutput");
+        tracing::trace!("Extract HyliOutput");
         let hyli_outputs =
-            match borsh::from_slice::<Vec<HyleOutput>>(proof.public_values.as_slice()) {
+            match borsh::from_slice::<Vec<HyliOutput>>(proof.public_values.as_slice()) {
                 Ok(outputs) => outputs,
                 Err(_) => {
-                    debug!("Failed to decode Vec<HyleOutput>, trying to decode as HyleOutput");
+                    debug!("Failed to decode Vec<HyliOutput>, trying to decode as HyliOutput");
                     vec![
-                        borsh::from_slice::<HyleOutput>(proof.public_values.as_slice())
-                            .context("Failed to extract HyleOuput from SP1 proof")?,
+                        borsh::from_slice::<HyliOutput>(proof.public_values.as_slice())
+                            .context("Failed to extract HyliOuput from SP1 proof")?,
                     ]
                 }
             };
@@ -265,7 +265,7 @@ pub mod native {
         index: BlobIndex,
         blobs: &[Blob],
         verifier: NativeVerifiers,
-    ) -> HyleOutput {
+    ) -> HyliOutput {
         #[allow(clippy::expect_used, reason = "Logic error in the code")]
         let blob = blobs.get(index.0).expect("Invalid blob index");
         let blobs: IndexedBlobs = blobs.iter().cloned().into();
@@ -284,7 +284,7 @@ pub mod native {
             tracing::info!("❌ Native blob verification failed on {tx_hash}:{index}.");
         }
 
-        HyleOutput {
+        HyliOutput {
             version: 1,
             initial_state: StateCommitment::default(),
             next_state: StateCommitment::default(),
@@ -307,7 +307,7 @@ mod tests {
     use std::{fs::File, io::Read};
 
     use hyli_model::{
-        Blob, BlobData, BlobIndex, HyleOutput, Identity, IndexedBlobs, ProgramId, ProofData,
+        Blob, BlobData, BlobIndex, HyliOutput, Identity, IndexedBlobs, ProgramId, ProofData,
         StateCommitment, TxHash,
     };
 
@@ -370,7 +370,7 @@ mod tests {
             Ok(outputs) => {
                 assert_eq!(
                     outputs,
-                    vec![HyleOutput {
+                    vec![HyliOutput {
                         version: 1,
                         initial_state: StateCommitment(vec![0, 0, 0, 0]),
                         next_state: StateCommitment(vec![0, 0, 0, 0]),

@@ -20,7 +20,7 @@ use futures::{
     sink::SinkExt,
     stream::{SplitSink, SplitStream, StreamExt},
 };
-use hyli_net::net::{HyleNetIntoMakeServiceWithconnectInfo, HyleNetSocketAddr};
+use hyli_net::net::{HyliNetIntoMakeServiceWithconnectInfo, HyliNetSocketAddr};
 use serde::{de::DeserializeOwned, Deserialize, Serialize};
 use tokio::{sync::Mutex, task::JoinSet};
 use tokio_util::sync::CancellationToken;
@@ -164,8 +164,8 @@ where
         let server = tokio::spawn(async move {
             if let Err(e) = axum::serve(
                 listener,
-                HyleNetIntoMakeServiceWithconnectInfo(
-                    app.into_make_service_with_connect_info::<HyleNetSocketAddr>(),
+                HyliNetIntoMakeServiceWithconnectInfo(
+                    app.into_make_service_with_connect_info::<HyliNetSocketAddr>(),
                 ),
             )
             .with_graceful_shutdown(async move {
@@ -238,7 +238,7 @@ where
 async fn ws_handler(
     ws: WebSocketUpgrade,
     State(state): State<NewPeers>,
-    ConnectInfo(addr): ConnectInfo<HyleNetSocketAddr>,
+    ConnectInfo(addr): ConnectInfo<HyliNetSocketAddr>,
 ) -> impl IntoResponse {
     ws.on_upgrade(async move |socket| {
         debug!("New WebSocket connection established");
