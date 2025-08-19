@@ -7,7 +7,6 @@ use crate::bus::{command_response::Query, BusClientSender};
 use crate::log_error;
 use crate::module_handle_messages;
 use crate::modules::{module_bus_client, Module, SharedBuildApiCtx};
-use crate::node_state::BlockNodeStateCallback;
 use anyhow::Result;
 use sdk::*;
 use std::path::PathBuf;
@@ -76,11 +75,7 @@ impl Module for NodeStateModule {
             info!("📝 Loaded contract state for {}", name);
         }
 
-        let node_state = NodeState {
-            store,
-            metrics,
-            callback: Box::new(BlockNodeStateCallback::new()),
-        };
+        let node_state = NodeState { store, metrics };
         let bus = NodeStateBusClient::new_from_bus(bus.new_handle()).await;
 
         Ok(Self {

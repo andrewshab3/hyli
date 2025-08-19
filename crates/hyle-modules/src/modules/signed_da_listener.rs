@@ -174,13 +174,16 @@ impl SignedDAListener {
                 .filter_map(|e| e.ok())
                 .collect::<Vec<_>>();
             entries.sort_by_key(|e| e.file_name());
+            tracing::debug!("Processing entry: {:?}", entries);
             for entry in entries {
+                tracing::debug!("Processing entry: {:?}", entry);
                 let path = entry.path();
                 if path.extension().map(|e| e == "bin").unwrap_or(false) {
                     if let Ok(bytes) = std::fs::read(&path) {
-                        if let Ok((block, tx_count)) =
-                            borsh::from_slice::<(SignedBlock, usize)>(&bytes)
-                        {
+                        if let Ok((block, tx_count)) = log_error!(
+                            borsh::from_slice::<(SignedBlock, usize)>(&bytes),
+                            "reading blocks"
+                        ) {
                             blocks.push((block, tx_count));
                         }
                     }
